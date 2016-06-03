@@ -2,26 +2,17 @@ package com.jme3x.jfx.media;
 
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.function.Function;
 
 import com.jme3.app.Application;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Image;
 import com.jme3.texture.Image.Format;
-import com.jme3.texture.Texture.MagFilter;
-import com.jme3.texture.Texture.MinFilter;
 import com.jme3.texture.Texture2D;
 import com.jme3.util.BufferUtils;
-import com.jme3x.jfx.util.FormatUtils;
-import com.jme3x.jfx.util.ImageExchanger;
 import com.sun.media.jfxmedia.control.VideoDataBuffer;
-import com.sun.media.jfxmedia.control.VideoFormat;
 import com.sun.media.jfxmedia.events.NewFrameEvent;
 import com.sun.media.jfxmedia.events.VideoRendererListener;
 
@@ -37,7 +28,7 @@ import com.sun.media.jfxmedia.events.VideoRendererListener;
  * mp.play();
  * movieMaterial = new MovieMaterial(application, mp, true);
  * movieMaterial.setLetterboxColor(ColorRGBA.Black);
- * quad.setMaterial(movieMaterial.getMaterial());
+ * geom.setMaterial(movieMaterial.getMaterial());
  * 
  * </pre>
  * 

@@ -116,7 +116,7 @@ public class JmeContextOffscreenSurface implements JmeContext {
 		if (actualContext == null)
 			throw new IllegalStateException("Not created");
 
-		// destroy wrapped context
+		// destroy wrapped fxcontext
 		actualContext.destroy(waitFor);
 	}
 

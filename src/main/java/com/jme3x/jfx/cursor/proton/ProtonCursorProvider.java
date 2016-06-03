@@ -11,7 +11,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.ClasspathLocator;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.InputManager;
-import com.jme3x.jfx.cursor.ICursorDisplayProvider;
+import com.jme3x.jfx.cursor.CursorDisplayProvider;
 import com.sun.javafx.cursor.CursorFrame;
 import com.sun.javafx.cursor.CursorType;
 
@@ -23,7 +23,7 @@ import com.sun.javafx.cursor.CursorType;
  * @author empire
  *
  */
-public class ProtonCursorProvider implements ICursorDisplayProvider {
+public class ProtonCursorProvider implements CursorDisplayProvider {
 	private static final Logger							logger	= LoggerFactory.getLogger(ProtonCursorProvider.class);
 
 	private ConcurrentHashMap<CursorType, JmeCursor>	cache	= new ConcurrentHashMap<CursorType, JmeCursor>();
