@@ -33,8 +33,6 @@ final class FullScreen extends BaseContext{
 
     private LayerImpl layer;
 
-    private FullScreen(){}
-
     FullScreen(ViewPort viewPort){
         this.viewPort = viewPort;
     }
@@ -136,7 +134,7 @@ final class FullScreen extends BaseContext{
         @Override
         public void show() {
             getApplication().enqueue(() -> {
-                geom = new Geometry(getName(), new Quad(viewPort.getCamera().getWidth(), viewPort.getCamera().getHeight(), true));
+                geom = new Geometry(getName(), new Quad(fxContainer.getWidth(), fxContainer.getHeight(), true));
 
                 material = new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
                 material.setTexture("ColorMap", fxContainer.getTexture());
@@ -149,6 +147,7 @@ final class FullScreen extends BaseContext{
 
         @Override
         public void close() {
+            geom.removeFromParent();
             fxContainer.destroy();
             FullScreen.this.layer = null;
         }
@@ -180,12 +179,12 @@ final class FullScreen extends BaseContext{
 
         @Override
         public int getWidth() {
-            return 0;
+            return fxContainer.getWidth();
         }
 
         @Override
         public int getHeight() {
-            return 0;
+            return fxContainer.getHeight();
         }
     }
 }
