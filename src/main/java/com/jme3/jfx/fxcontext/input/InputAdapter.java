@@ -1,4 +1,4 @@
-package com.jme3.jfx.input;
+package com.jme3.jfx.fxcontext.input;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.input.event.KeyInputEvent;

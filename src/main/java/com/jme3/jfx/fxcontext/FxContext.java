@@ -3,7 +3,7 @@ package com.jme3.jfx.fxcontext;
 import com.jme3.app.Application;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Stage;
-import com.jme3.jfx.input.InputAdapter;
+import com.jme3.jfx.fxcontext.input.InputAdapter;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.texture.Image;

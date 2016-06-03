@@ -23,6 +23,7 @@ public interface Layer {
 
     void setScene(Scene scene);
 
+    //TODO add config param that shows the layer at creating to save a frame
     void show();
     void close();
 

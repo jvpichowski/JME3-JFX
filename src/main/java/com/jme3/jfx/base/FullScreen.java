@@ -3,7 +3,7 @@ package com.jme3.jfx.base;
 import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
-import com.jme3.jfx.input.InputAdapter;
+import com.jme3.jfx.fxcontext.input.InputAdapter;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.renderer.ViewPort;

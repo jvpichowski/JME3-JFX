@@ -4,7 +4,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Stage;
-import com.jme3.jfx.input.InputAdapter;
+import com.jme3.jfx.fxcontext.input.InputAdapter;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;

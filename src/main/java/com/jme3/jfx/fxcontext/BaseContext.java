@@ -15,7 +15,7 @@ import com.jme3.texture.Image;
 import com.jme3.texture.Image.Format;
 import com.jme3.texture.Texture2D;
 import com.jme3.util.BufferUtils;
-import com.jme3.jfx.input.InputAdapter;
+import com.jme3.jfx.fxcontext.input.InputAdapter;
 import com.sun.glass.ui.Pixels;
 import com.sun.istack.internal.NotNull;
 import com.sun.javafx.cursor.CursorFrame;

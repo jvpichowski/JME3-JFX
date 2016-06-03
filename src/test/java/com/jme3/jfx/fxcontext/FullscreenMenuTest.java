@@ -11,7 +11,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Stage;
-import com.jme3.jfx.input.InputAdapter;
+import com.jme3.jfx.fxcontext.input.InputAdapter;
 import com.jme3.math.Vector2f;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
