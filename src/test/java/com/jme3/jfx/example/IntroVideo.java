@@ -1,4 +1,4 @@
-package com.jme3.jfx.layer;
+package com.jme3.jfx.example;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 /**
  * Created by jan on 17.05.16.
  */
-public class IntroExample {
+public class IntroVideo {
 
     public static void main(String[] args){
         JFxManager jFxManager = new JFxManager();
