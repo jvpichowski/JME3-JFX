@@ -30,7 +30,7 @@ public interface Context {
             return null;//log multilayer contexts are not supported
         }
         if(config.viewPort != null) {
-            return new FullScreen(config.viewPort);
+            return new SingleLayerFullscreen(config.viewPort);
         }
         return null;
     }

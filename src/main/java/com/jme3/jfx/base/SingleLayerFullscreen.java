@@ -12,11 +12,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 import com.sun.javafx.embed.AbstractEvents;
-import javafx.scene.Scene;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +24,7 @@ import java.util.List;
  *
  * Created by jan on 16.05.16.
  */
-final class FullScreen extends BaseContext{
+final class SingleLayerFullscreen extends BaseContext{
 
     private ViewPort viewPort;
     private Geometry geom;
@@ -35,7 +32,7 @@ final class FullScreen extends BaseContext{
 
     private LayerImpl layer;
 
-    FullScreen(ViewPort viewPort){
+    SingleLayerFullscreen(ViewPort viewPort){
         this.viewPort = viewPort;
     }
 
@@ -136,7 +133,7 @@ final class FullScreen extends BaseContext{
     private final class LayerImpl extends BaseLayer implements InputAdapter.InputListener {
 
         public LayerImpl(FxContainer fxContainer){
-            super(FullScreen.this, fxContainer);
+            super(SingleLayerFullscreen.this, fxContainer);
         }
 
         @Override
