@@ -124,6 +124,7 @@ public final class AlphaInputAdapter implements InputAdapter {
         final boolean covered = isCovered(x, y);
         if (!covered) {
             context.loseFocus();
+            //return?
         } else {
             evt.setConsumed();
             context.grabFocus();

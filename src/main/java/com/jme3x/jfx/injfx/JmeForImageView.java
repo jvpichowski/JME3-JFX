@@ -88,11 +88,11 @@ public class JmeForImageView {
 	}
 
 	/**
-	 * Enqueue action to apply in Jme's Thread
+	 * Enqueue action to applyMouseInput in Jme's Thread
 	 * Action can be add/remove AppState, Node, Light,
 	 * change the AppSettings....
 	 *
-	 * @param f(jmeApp) the action to apply
+	 * @param f(jmeApp) the action to applyMouseInput
 	 */
 	public <R> Future<R> enqueue(Function<SimpleApplication,R> f) {
 		SimpleApplication jmeApp = findOrCreate();

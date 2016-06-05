@@ -76,6 +76,26 @@ public interface Stage {
         }
 
         @Override
+        public void loseFocus() {
+
+        }
+
+        @Override
+        public void grabFocus() {
+
+        }
+
+        @Override
+        public boolean hasFocus() {
+            return stage.hasFocus();
+        }
+
+        @Override
+        public void setInputMode(InputMode mode) {
+
+        }
+
+        @Override
         public void show() {
 
         }

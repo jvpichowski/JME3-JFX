@@ -9,7 +9,7 @@ import com.jme3.renderer.ViewPort;
  * It is not defined what happens when you change a configuration after launching a context.
  * This could happen:
  * - nothing
- * - you need to restart the context to apply changes
+ * - you need to restart the context to applyMouseInput changes
  * - the changes are instantly applied
  *
  * Created by jan on 01.06.16.

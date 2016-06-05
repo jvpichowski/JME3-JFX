@@ -4,7 +4,6 @@ import com.jme3.app.Application;
 import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
-import com.jme3.jfx.fxcontext.input.InputAdapter;
 
 import java.util.List;
 

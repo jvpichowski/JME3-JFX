@@ -23,6 +23,19 @@ public interface Layer {
 
     void setScene(Scene scene);
 
+    enum InputMode{
+        LEAK,
+        EAT_UP,
+        ALPHA,
+        FX_BASED
+    }
+
+    void loseFocus();
+    void grabFocus();
+    boolean hasFocus();
+
+    void setInputMode(InputMode mode);
+
     //TODO add config param that shows the layer at creating to save a frame
     void show();
     void close();

@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 /**
  * Created by jan on 17.05.16.
  */
-public class IntroTest {
+public class IntroExample {
 
     public static void main(String[] args){
         JFxManager jFxManager = new JFxManager();

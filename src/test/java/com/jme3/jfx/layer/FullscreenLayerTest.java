@@ -8,12 +8,15 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import javafx.event.Event;
@@ -94,17 +97,22 @@ public class FullscreenLayerTest {
             app.getInputManager().addListener(new ActionListener() {
                 @Override
                 public void onAction(String name, boolean isPressed, float tpf) {
-//                    CollisionResults results = new CollisionResults();
-//
-//                    Vector2f click2d = app.getInputManager().getCursorPosition();
-//
-//                    stage.getContext().getInputAdapter().onMouseButtonEvent(InputAdapter.translate(
-//                            stage, MouseInput.BUTTON_LEFT, isPressed, app.getTimer().getTime(), click2d.getX(), click2d.getY()),
-//                            k -> System.out.println(k.isConsumed() ? "Consumed" : "Not consumed"));
 
+                    Vector2f click2d = app.getInputManager().getCursorPosition();
+
+                    MouseButtonEvent evt = new MouseButtonEvent(0, isPressed, (int)click2d.getX(), (int)click2d.getY());
+                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
 
                 }
             }, "LeftMouse");
+            app.getInputManager().addListener(new ActionListener() {
+                @Override
+                public void onAction(String name, boolean isPressed, float tpf) {
+
+                    KeyInputEvent evt = new KeyInputEvent(KeyInput.KEY_A, 'a', isPressed, false);
+                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
+                }
+            }, "KeyA");
         });
         app.start();
     }

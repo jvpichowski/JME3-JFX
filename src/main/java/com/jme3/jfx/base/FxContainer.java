@@ -292,6 +292,37 @@ final class FxContainer {
         return isCreated;
     }
 
+    public final boolean isActive(){
+        return scenePeer != null;
+    }
+
+    //**********************************************************//
+    // Input Management                                         //
+    //**********************************************************//
+
+    /*
+     * A notification about mouse event received by host container.
+     */
+    public void mouseEvent(int type, int button,
+                           boolean primaryBtnDown, boolean middleBtnDown, boolean secondaryBtnDown,
+                           int x, int y, int xAbs, int yAbs,
+                           boolean shift, boolean ctrl, boolean alt, boolean meta,
+                           int wheelRotation, boolean popupTrigger){
+
+        jfxManager.enqueue(() -> scenePeer.mouseEvent(type, button,
+                    primaryBtnDown, middleBtnDown, secondaryBtnDown,
+                    x, y, xAbs, yAbs,
+                    shift, ctrl, alt, meta,
+                    wheelRotation, popupTrigger));
+    }
+    /*
+     * A notification about key event received by host container.
+     */
+    public void keyEvent(int type, int key, char[] chars, int modifiers){
+        jfxManager.enqueue(() -> scenePeer.keyEvent(type, key, chars, modifiers));
+    }
+
+
     //**********************************************************//
     // Scene Management                                         //
     //**********************************************************//
