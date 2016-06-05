@@ -16,6 +16,8 @@ import javafx.scene.Scene;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -59,18 +61,9 @@ final class FullScreen extends BaseContext{
     }
 
     @Override
-    public List<Layer> getLayers() {
-        List<Layer> result = new ArrayList<>();
-        result.add(layer);
-        return result;
-    }
-
-    @Override
     public void create(JFxManager jFxManager){
         super.create(jFxManager);
     }
-
-
 
     @Override
     public void destroy() {
@@ -81,6 +74,26 @@ final class FullScreen extends BaseContext{
             layer = null;
         }
         super.destroy();
+    }
+
+    //***************************************************************//
+    // Layer Handling                                                //
+    //***************************************************************//
+
+
+    @Override
+    public List<Layer> getLayers() {
+        List<Layer> layers = new LinkedList<>();
+        layers.add(layer);
+        return layers;
+    }
+
+    public void pushFront(Layer layer){
+        //nothing to do here because there is only one layer
+    }
+
+    public void pushBack(Layer layer){
+        //nothing to do here because there is only one layer
     }
 
 
@@ -120,48 +133,19 @@ final class FullScreen extends BaseContext{
     }
 
 
-    private final class LayerImpl implements Layer, InputAdapter.InputListener {
-
-        private final FxContainer fxContainer;
-        private InputMode inputMode = InputMode.LEAK;
-        private boolean hasFocus = false;
+    private final class LayerImpl extends BaseLayer implements InputAdapter.InputListener {
 
         public LayerImpl(FxContainer fxContainer){
-            this.fxContainer = fxContainer;
-        }
-
-        @Override
-        public void setScene(Scene scene){
-            fxContainer.setScene(scene);
-        }
-
-        @Override
-        public void loseFocus() {
-            hasFocus = false;
-        }
-
-        @Override
-        public void grabFocus() {
-            hasFocus = true;
-        }
-
-        @Override
-        public boolean hasFocus() {
-            return hasFocus;
-        }
-
-        @Override
-        public void setInputMode(InputMode mode) {
-            this.inputMode = mode;
+            super(FullScreen.this, fxContainer);
         }
 
         @Override
         public void show() {
             getApplication().enqueue(() -> {
-                geom = new Geometry(getName(), new Quad(fxContainer.getWidth(), fxContainer.getHeight(), true));
+                geom = new Geometry(getName(), new Quad(getWidth(), getHeight(), true));
 
                 material = new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-                material.setTexture("ColorMap", fxContainer.getTexture());
+                material.setTexture("ColorMap", getFxContainer().getTexture());
                 material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
                 geom.setQueueBucket(RenderQueue.Bucket.Gui);
                 geom.setMaterial(material);
@@ -172,27 +156,12 @@ final class FullScreen extends BaseContext{
         @Override
         public void close() {
             geom.removeFromParent();
-            fxContainer.destroy();
+            super.close();
             //to prevent endless loop
             //it is correct to first clear the layer
             //and afterwards destroy the context
             layer = null;
             destroy();
-        }
-
-        @Override
-        public void setTitle(String title) {
-            fxContainer.setName(title);
-        }
-
-        @Override
-        public void toFront() {
-            //nothing to do because there is only one layer
-        }
-
-        @Override
-        public void toBack() {
-            //nothing to do because there is only one layer
         }
 
         @Override
@@ -205,20 +174,10 @@ final class FullScreen extends BaseContext{
             throw new IllegalStateException("This layer can't be resized");
         }
 
-        @Override
-        public int getWidth() {
-            return fxContainer.getWidth();
-        }
-
-        @Override
-        public int getHeight() {
-            return fxContainer.getHeight();
-        }
-
 
         @Override
         public boolean applyMouseInput(int eventType, int button, int wheelRotation, int jME_x, int jME_y){
-            if(!fxContainer.isActive()){
+            if(!getFxContainer().isActive()){
                 return false;
             }
             //if not covered return false here
@@ -233,7 +192,7 @@ final class FullScreen extends BaseContext{
             //converting happens in the context
             final int x = jME_x;
             final int y = Math.round(getHeight()) - jME_y;
-            fxContainer.mouseEvent(eventType, button,
+            getFxContainer().mouseEvent(eventType, button,
                     getJFxManager().getInputAdapter().getMouseButtonState(0),
                     getJFxManager().getInputAdapter().getMouseButtonState(1),
                     getJFxManager().getInputAdapter().getMouseButtonState(2),
@@ -249,13 +208,13 @@ final class FullScreen extends BaseContext{
 
         @Override
         public boolean applyKeyInput(int eventType, int fx_keycode) {
-            if(!fxContainer.isActive()){
+            if(!getFxContainer().isActive()){
                 return false;
             }
             if(!hasFocus()){
                 return false;
             }
-            fxContainer.keyEvent(eventType, fx_keycode,
+            getFxContainer().keyEvent(eventType, fx_keycode,
                     new char[] { getJFxManager().getInputAdapter().getKeyChar(fx_keycode) },
                     getJFxManager().getInputAdapter().getEmbeddedModifiers());
             return true;

@@ -36,6 +36,11 @@ public interface Context {
     }
 
     Layer createLayer(FxApplication application);
+
+    /**
+     * ordered from front to back
+     * @return
+     */
     List<Layer> getLayers();
 
 

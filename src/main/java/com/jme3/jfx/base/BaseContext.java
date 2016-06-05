@@ -2,6 +2,12 @@ package com.jme3.jfx.base;
 
 import com.jme3.app.Application;
 import com.jme3.jfx.JFxManager;
+import com.jme3.jfx.Layer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Implementation
@@ -14,6 +20,9 @@ abstract class BaseContext implements Context {
     private JFxManager jFxManager;
     private String name = "";
     private boolean created = false;
+
+    //LinkedList is faster for rearranging elements (pushFront/Back)
+    private List<Layer> layers = new LinkedList<>();
 
     /**
      * Really needed?
@@ -78,4 +87,35 @@ abstract class BaseContext implements Context {
     public final JFxManager getJFxManager() {
         return jFxManager;
     }
+
+
+    @Override
+    public List<Layer> getLayers() {
+        return Collections.unmodifiableList(layers);
+    }
+
+    protected void addLayer(Layer layer){
+        layers.add(layer);
+    }
+
+    protected void removeLayer(Layer layer){
+        layers.remove(layer);
+    }
+
+    public void pushFront(Layer layer){
+        if(layers.size() <= 1){
+            return;
+        }
+        layers.remove(layer);
+        layers.add(0, layer);
+    }
+
+    public void pushBack(Layer layer){
+        if(layers.size() <= 1){
+            return;
+        }
+        layers.remove(layer);
+        layers.add(layer);
+    }
+
 }
