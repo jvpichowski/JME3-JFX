@@ -85,10 +85,12 @@ final class SingleLayerFullscreen extends BaseContext{
         return layers;
     }
 
+    @Override
     public void pushFront(Layer layer){
         //nothing to do here because there is only one layer
     }
 
+    @Override
     public void pushBack(Layer layer){
         //nothing to do here because there is only one layer
     }
