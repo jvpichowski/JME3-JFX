@@ -1,10 +1,7 @@
 package com.jme3.jfx.base;
 
-import com.jme3.input.awt.AwtKeyInput;
-import com.jme3.input.event.KeyInputEvent;
-import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.input.event.MouseMotionEvent;
 import com.jme3.jfx.FxApplication;
+import com.jme3.jfx.InputAdapter;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.material.Material;
@@ -20,7 +17,6 @@ import javafx.scene.Scene;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Implementation
@@ -124,7 +120,7 @@ final class FullScreen extends BaseContext{
     }
 
 
-    private final class LayerImpl implements Layer, JFxManager.InputListener {
+    private final class LayerImpl implements Layer, InputAdapter.InputListener {
 
         private final FxContainer fxContainer;
         private InputMode inputMode = InputMode.LEAK;
