@@ -18,9 +18,25 @@ public final class Configuration {
 
     boolean transparent;
     ViewPort viewPort;
+    boolean singleLayer = true;
 
+    /**
+     *
+     * @param viewPort default: null
+     * @return the configuration object
+     */
     public Configuration setViewPort(ViewPort viewPort){
         this.viewPort = viewPort;
+        return this;
+    }
+
+    /**
+     * Call this if you want a context with only one layer
+     * @param singleLayer default: true
+     * @return the configuration object
+     */
+    public Configuration setSingleLayer(boolean singleLayer){
+        this.singleLayer = singleLayer;
         return this;
     }
 }

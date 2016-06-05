@@ -93,14 +93,6 @@ final class FullScreen extends BaseContext{
     //******************************************************************//
 
     /**
-     * @return the InputAdapterMode
-     */
-    @Override
-    public InputAdapter getInputAdapter() {
-        return null;
-    }
-
-    /**
      * grab the focus to this scene
      */
     @Override

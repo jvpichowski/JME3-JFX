@@ -26,6 +26,9 @@ public interface Context {
      * @return
      */
     static Context create(Configuration config){
+        if(!config.singleLayer){
+            return null;//log multilayer contexts are not supported
+        }
         if(config.viewPort != null) {
             return new FullScreen(config.viewPort);
         }
@@ -35,11 +38,6 @@ public interface Context {
     Layer createLayer(FxApplication application);
     List<Layer> getLayers();
 
-    /**
-     * Really needed?
-     * @return
-     */
-//    EmbeddedSceneInterface getSceneInterface();
 
     void setName(String name);
 
@@ -51,10 +49,15 @@ public interface Context {
      */
 //    Image getImage();
 
+    /**
+     * After its creation you could add layers to the context
+     *
+     * @return true if the context is created otherwise false
+     */
     boolean isCreated();
 
     /**
-     * FOR INTERNAL USE ONLY
+     * FOR INTERNAL USE ONLY - will throw exception if used twice
      *
      * is called at jfxManager.createLayer
      * @param jfxManager
@@ -64,16 +67,9 @@ public interface Context {
     void restart();
 
     /**
-     * Destroy this fxcontext
+     * Destroy this context
      */
     void destroy();
-
-
-    /**
-     *
-     * @return the InputAdapter
-     */
-    InputAdapter getInputAdapter();
 
     /**
      *
@@ -88,12 +84,12 @@ public interface Context {
     JFxManager getJFxManager();
 
     /**
-     * grab the focus to this scene
+     * manually grab the focus to this context
      */
     void grabFocus();
 
     /**
-     * remove the focus from this scene
+     * manually remove the focus from this context
      */
     void loseFocus();
 
