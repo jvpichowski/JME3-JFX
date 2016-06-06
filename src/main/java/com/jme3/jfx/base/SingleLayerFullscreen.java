@@ -14,7 +14,7 @@ import com.jme3.scene.shape.Quad;
 import com.sun.javafx.embed.AbstractEvents;
 
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,9 +80,12 @@ final class SingleLayerFullscreen extends BaseContext{
 
     @Override
     public List<Layer> getLayers() {
-        List<Layer> layers = new LinkedList<>();
-        layers.add(layer);
-        return layers;
+        return Arrays.asList(layer);
+    }
+
+    @Override
+    protected void reorderLayers() {
+        //nothing to do here because there is only one layer
     }
 
     @Override
@@ -154,7 +157,7 @@ final class SingleLayerFullscreen extends BaseContext{
 
         @Override
         public void close() {
-            geom.removeFromParent();
+            getApplication().enqueue(() ->  geom.removeFromParent());
             super.close();
             //to prevent endless loop
             //it is correct to first clear the layer
@@ -179,7 +182,7 @@ final class SingleLayerFullscreen extends BaseContext{
             if(!getFxContainer().isActive()){
                 return false;
             }
-            //if not covered return false here
+            //if not covered return false here - release focus?
 
             if(eventType == AbstractEvents.MOUSEEVENT_PRESSED){
                 grabFocus();

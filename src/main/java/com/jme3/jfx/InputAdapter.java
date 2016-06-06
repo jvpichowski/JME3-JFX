@@ -186,6 +186,8 @@ public final class InputAdapter {
          * @param wheelRotation
          * @param jME_x screen x
          * @param jME_y screen y
+         *
+         * TODO use late boolean
          * @return true if consumed by context
          */
         boolean applyMouseInput(int eventType, int button, int wheelRotation, int jME_x, int jME_y);

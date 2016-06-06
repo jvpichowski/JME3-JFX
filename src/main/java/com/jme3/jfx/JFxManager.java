@@ -7,13 +7,12 @@ import com.jme3.jfx.base.Context;
 import com.jme3.jfx.fxcontext.FxContext;
 import com.sun.javafx.application.PlatformImpl;
 import javafx.application.Platform;
+import jdk.nashorn.internal.ir.Block;
 import org.lwjgl.opengl.Display;
 
 import javax.swing.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 
 /**
@@ -32,6 +31,7 @@ public final class JFxManager extends BaseAppState {
     //those are called on the jME3 thread
     private BlockingQueue<Runnable> initTasks = new LinkedBlockingQueue<>();
     private BlockingQueue<Runnable> cleanTasks = new LinkedBlockingQueue<>();
+    private CopyOnWriteArrayList<Consumer<Float>> updateTasks = new CopyOnWriteArrayList<>();
 
     public Layer launch(Context context, FxApplication application){
         context.create(this);
@@ -78,6 +78,14 @@ public final class JFxManager extends BaseAppState {
         }catch (Exception ex){
             throw new IllegalStateException("This jME3 Context doesn't support this operation! You have to use lgjwl");
         }
+    }
+
+    public void addOnUpdate(Consumer<Float> onUpdate){
+        updateTasks.add(onUpdate);
+    }
+
+    public void removeOnUpdate(Consumer<Float> onUpdate){
+        updateTasks.remove(onUpdate);
     }
 
     public void onInit(Runnable r){
@@ -141,6 +149,13 @@ public final class JFxManager extends BaseAppState {
             Platform.exit();
         }
 
+    }
+
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        updateTasks.forEach(t -> t.accept(tpf));
     }
 
     /**

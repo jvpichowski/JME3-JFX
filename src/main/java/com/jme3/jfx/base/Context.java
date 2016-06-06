@@ -26,11 +26,14 @@ public interface Context {
      * @return
      */
     static Context create(Configuration config){
-        if(!config.singleLayer){
-            return null;//log multilayer contexts are not supported
-        }
         if(config.viewPort != null) {
-            return new SingleLayerFullscreen(config.viewPort);
+            if(config.singleLayer){
+                return new SingleLayerFullscreen(config.viewPort);
+            }else{
+                Context result = new MultiLayerFullscreen(config.viewPort, config.staticLayers);
+                result.setName(config.name);
+                return result;
+            }
         }
         return null;
     }
