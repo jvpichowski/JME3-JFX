@@ -42,7 +42,7 @@ class MultiLayerContext extends BaseContext {
     @Override
     public void create(JFxManager jfxManager) {
         super.create(jfxManager);
-        renderSystem.create(this);
+        renderSystem.create(this, null);
         layerNode = renderSystem.getScene();
         inputListener = new InputListenerImpl();
         getJFxManager().getInputAdapter().register(inputListener);
