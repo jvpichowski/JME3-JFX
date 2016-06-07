@@ -4,6 +4,8 @@ import com.jme3.jfx.InputAdapter;
 import com.jme3.renderer.ViewPort;
 import com.jme3.texture.Texture2D;
 
+import java.awt.*;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 /**
@@ -29,16 +31,19 @@ public final class Configuration {
     int width = 0;
     int height = 0;
 
-    //Output modes
-    boolean toViewPort; //needs a viewport
-    boolean toTexture; //needs a geometry toGeometry
-    boolean toPostViewPort;
 
 
     RenderSystem renderSystem;
+    BiFunction<Context, Point, Point> inputConverter;
 
     public Configuration setRenderSystem(RenderSystem renderSystem){
         this.renderSystem = renderSystem;
+        return this;
+    }
+
+
+    public Configuration setInputConverter(BiFunction<Context, Point, Point> inputConverter){
+        this.inputConverter = inputConverter;
         return this;
     }
 

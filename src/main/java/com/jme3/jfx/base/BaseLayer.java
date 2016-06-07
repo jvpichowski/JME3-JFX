@@ -57,6 +57,8 @@ abstract class BaseLayer implements Layer{
     @Override
     public void grabFocus() {
         hasFocus = true;
+        //really suited?
+//        toFront();
     }
 
     @Override

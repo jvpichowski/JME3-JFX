@@ -2,22 +2,15 @@ package com.jme3.jfx.example;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
-import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.input.event.KeyInputEvent;
-import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
+import com.jme3.jfx.base.InputConverters;
 import com.jme3.jfx.base.RenderSystem;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import javafx.animation.PauseTransition;
@@ -52,6 +45,7 @@ public class StaticLayers {
         };
 
         jFxManager.onInit(() -> {
+            jFxManager.beginInput();
             Configuration config = new Configuration();
 
             config.setRenderSystem(RenderSystem.renderToFullscreen(
@@ -70,6 +64,7 @@ public class StaticLayers {
 //                ((SimpleApplication)app).getGuiNode().attachChild(geom);
 //            }));
 
+            config.setInputConverter(InputConverters.FullscreenInput);
             config.setSingleLayer(false);
             config.setStaticLayers(true);
             config.setName("static layer fullscreen context");
@@ -86,28 +81,6 @@ public class StaticLayers {
             l1.toBack();
 
             jFxManager.onClean(() -> context.destroy());
-
-            app.getInputManager().addMapping("LeftMouse", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-            app.getInputManager().addMapping("KeyA", new KeyTrigger(KeyInput.KEY_A));
-            app.getInputManager().addListener(new ActionListener() {
-                @Override
-                public void onAction(String name, boolean isPressed, float tpf) {
-
-                    Vector2f click2d = app.getInputManager().getCursorPosition();
-
-                    MouseButtonEvent evt = new MouseButtonEvent(0, isPressed, (int)click2d.getX(), (int)click2d.getY());
-                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
-
-                }
-            }, "LeftMouse");
-            app.getInputManager().addListener(new ActionListener() {
-                @Override
-                public void onAction(String name, boolean isPressed, float tpf) {
-
-                    KeyInputEvent evt = new KeyInputEvent(KeyInput.KEY_A, 'a', isPressed, false);
-                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
-                }
-            }, "KeyA");
         });
         app.start();
     }

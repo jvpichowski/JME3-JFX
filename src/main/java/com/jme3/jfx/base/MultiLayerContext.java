@@ -11,7 +11,9 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
+import java.awt.*;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 /**
  * Created by jan on 06.06.16.
@@ -26,10 +28,12 @@ class MultiLayerContext extends BaseContext {
 
     private final boolean staticLayers;
     private final RenderSystem renderSystem;
+    private final BiFunction<Context, Point, Point> inputConverter;
 
-    public MultiLayerContext(RenderSystem renderSystem, boolean staticLayers) {
+    public MultiLayerContext(RenderSystem renderSystem, BiFunction<Context, Point, Point> inputConverter, boolean staticLayers) {
         this.staticLayers = staticLayers;
         this.renderSystem = renderSystem;
+        this.inputConverter = inputConverter;
     }
 
     /**
@@ -68,7 +72,7 @@ class MultiLayerContext extends BaseContext {
     protected void reorderLayers() {
         //TODO maybe slow -> use concurrent data structure and enqueue all together
         //and use for loop to get index
-        getLayers().forEach(l -> ((LayerImpl)l).setZPosition(getLayers().indexOf(l)));
+        getLayers().forEach(l -> ((LayerImpl)l).setOrderingPosition(getLayers().indexOf(l)));
     }
 
     @Override
@@ -112,6 +116,16 @@ class MultiLayerContext extends BaseContext {
         return hasFocus;
     }
 
+    @Override
+    public int getHeight() {
+        return renderSystem.getHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        return renderSystem.getWidth();
+    }
+
 
     private final class InputListenerImpl implements InputAdapter.InputListener {
 
@@ -132,9 +146,12 @@ class MultiLayerContext extends BaseContext {
         @Override
         public boolean applyMouseInput(int eventType, int button, int wheelRotation, int jME_x, int jME_y) {
 
-            //converting happens in the context
-            final int x = jME_x;
-            final int y = renderSystem.getHeight() - jME_y;
+            Point click = inputConverter.apply(MultiLayerContext.this, new Point(jME_x, jME_y));
+            if(click == null){
+                return false;
+            }
+            int x = click.x;
+            int y = click.y;
 
             //ordered because getLayers() returns an ordered list
             Optional<Layer> consumer = getLayers().stream().filter(layer -> {
@@ -192,11 +209,11 @@ class MultiLayerContext extends BaseContext {
             super(MultiLayerContext.this, fxContainer);
         }
 
-        public void setZPosition(float z){
+        public void setOrderingPosition(float z){
             getApplication().enqueue(() -> geom.setLocalTranslation(
                     geom.getLocalTranslation().getX(),
                     geom.getLocalTranslation().getY(),
-                    z));
+                    z+1));//just in front of the camera
         }
 
         public float getX(){

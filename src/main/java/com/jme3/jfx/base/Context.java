@@ -27,7 +27,7 @@ public interface Context {
      */
     static Context create(Configuration config){
         if(config.renderSystem != null){
-            Context result = new MultiLayerContext(config.renderSystem, config.staticLayers);
+            Context result = new MultiLayerContext(config.renderSystem, config.inputConverter, config.staticLayers);
             result.setName(config.name);
             return result;
         }
@@ -51,6 +51,10 @@ public interface Context {
     void setName(String name);
 
     String getName();
+
+    int getHeight();
+
+    int getWidth();
 
     /**
      *

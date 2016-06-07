@@ -90,29 +90,6 @@ public class FullscreenLayerTest {
             jFxManager.onClean(() -> System.out.println("Clean fx"));
 
             //app.getCamera().setLocation(new Vector3f(10, 10, 15));
-
-
-            app.getInputManager().addMapping("LeftMouse", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-            app.getInputManager().addMapping("KeyA", new KeyTrigger(KeyInput.KEY_A));
-            app.getInputManager().addListener(new ActionListener() {
-                @Override
-                public void onAction(String name, boolean isPressed, float tpf) {
-
-                    Vector2f click2d = app.getInputManager().getCursorPosition();
-
-                    MouseButtonEvent evt = new MouseButtonEvent(0, isPressed, (int)click2d.getX(), (int)click2d.getY());
-                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
-
-                }
-            }, "LeftMouse");
-            app.getInputManager().addListener(new ActionListener() {
-                @Override
-                public void onAction(String name, boolean isPressed, float tpf) {
-
-                    KeyInputEvent evt = new KeyInputEvent(KeyInput.KEY_A, 'a', isPressed, false);
-                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
-                }
-            }, "KeyA");
         });
         app.start();
     }

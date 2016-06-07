@@ -80,6 +80,20 @@ public final class JFxManager extends BaseAppState {
         }
     }
 
+    /**
+     * On calling this the RawInputListener is added to the InputManager
+     */
+    public void beginInput(){
+        inputAdapter.create(getApplication());
+    }
+
+    /**
+     * On calling this the RawInputListener is removed from the InputManager
+     */
+    public void endInput(){
+        inputAdapter.destroy();
+    }
+
     public void addOnUpdate(Consumer<Float> onUpdate){
         updateTasks.add(onUpdate);
     }

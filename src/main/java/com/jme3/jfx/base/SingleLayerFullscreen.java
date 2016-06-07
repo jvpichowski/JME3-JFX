@@ -134,6 +134,20 @@ final class SingleLayerFullscreen extends BaseContext{
         return false;
     }
 
+    //********************************************************************//
+    // Some getters                                                       //
+    //********************************************************************//
+
+
+    @Override
+    public int getHeight() {
+        return layer.getHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        return layer.getWidth();
+    }
 
     private final class LayerImpl extends BaseLayer implements InputAdapter.InputListener {
 
