@@ -39,10 +39,10 @@ public class FullscreenLayerTest {
             @Override
             public void simpleInitApp() {
                 getStateManager().getState(FlyCamAppState.class).setEnabled(true);
-                Box b = new Box(1, 1, 1); // create cube shape
-                Geometry geom = new Geometry("Box", b);  // create cube geometry from the shape
+                Box b = new Box(1, 1, 1); // renderToFullscreen cube shape
+                Geometry geom = new Geometry("Box", b);  // renderToFullscreen cube geometry from the shape
                 Material mat = new Material(assetManager,
-                        "Common/MatDefs/Misc/Unshaded.j3md");  // create a simple material
+                        "Common/MatDefs/Misc/Unshaded.j3md");  // renderToFullscreen a simple material
                 mat.setColor("Color", ColorRGBA.Blue);   // set color of material to blue
                 geom.setMaterial(mat);                   // set the cube's material
                 rootNode.attachChild(geom);              // make the cube appear in the scene

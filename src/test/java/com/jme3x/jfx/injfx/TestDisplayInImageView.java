@@ -124,7 +124,7 @@ public class TestDisplayInImageView extends Application {
 	 * Create a similar scene to Tutorial "Hello Material" but without texture
 	 * http://hub.jmonkeyengine.org/wiki/doku.php/jme3:beginner:hello_material
 	 *
-	 * @param jmeApp the application where to create a Scene
+	 * @param jmeApp the application where to renderToFullscreen a Scene
 	 */
 	static boolean createScene(SimpleApplication jmeApp) {
 		Node rootNode = jmeApp.getRootNode();

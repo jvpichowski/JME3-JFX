@@ -2,20 +2,34 @@ package com.jme3.jfx.example;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
+import com.jme3.jfx.base.RenderSystem;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
+import javafx.animation.PauseTransition;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by jan on 06.06.16.
@@ -27,10 +41,10 @@ public class StaticLayers {
         Application app = new SimpleApplication(jFxManager) {
             @Override
             public void simpleInitApp() {
-                Box b = new Box(1, 1, 1);                                   // create cube shape
-                Geometry geom = new Geometry("Box", b);                     // create cube geometry from the shape
+                Box b = new Box(1, 1, 1);                                   // renderToFullscreen cube shape
+                Geometry geom = new Geometry("Box", b);                     // renderToFullscreen cube geometry from the shape
                 Material mat = new Material(getAssetManager(),
-                        "Common/MatDefs/Misc/Unshaded.j3md");               // create a simple material
+                        "Common/MatDefs/Misc/Unshaded.j3md");               // renderToFullscreen a simple material
                 mat.setColor("Color", ColorRGBA.Blue);                      // set color of material to blue
                 geom.setMaterial(mat);                                      // set the cube's material
                 getRootNode().attachChild(geom);   // make the cube appear in the scene
@@ -39,7 +53,23 @@ public class StaticLayers {
 
         jFxManager.onInit(() -> {
             Configuration config = new Configuration();
-            config.setViewPort(app.getGuiViewPort());
+
+            config.setRenderSystem(RenderSystem.renderToFullscreen(
+                    app.getGuiViewPort().getCamera().getWidth(),
+                    app.getGuiViewPort().getCamera().getHeight()));
+
+//            config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
+
+//            config.setRenderSystem(RenderSystem.renderToTexture(200, 200, texture2D -> {
+//                Geometry geom = new Geometry("Java Fx Quad", new Quad(200, 200, true));
+//                Material material = new Material(app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+//                material.setTexture("ColorMap", texture2D);
+//                material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+//                geom.setQueueBucket(RenderQueue.Bucket.Gui);
+//                geom.setMaterial(material);
+//                ((SimpleApplication)app).getGuiNode().attachChild(geom);
+//            }));
+
             config.setSingleLayer(false);
             config.setStaticLayers(true);
             config.setName("static layer fullscreen context");
@@ -47,11 +77,37 @@ public class StaticLayers {
             Context context = Context.create(config);
 
             Layer l0 = jFxManager.launch(context, createFxApp(0));
-            context.createLayer(createFxApp(1));
+            Layer l1 = context.createLayer(createFxApp(1));
             context.createLayer(createFxApp(2));
-            context.createLayer(createFxApp(4));
             context.createLayer(createFxApp(3));
+            context.createLayer(createFxApp(4));
+            //change ordering
             l0.toFront();
+            l1.toBack();
+
+            jFxManager.onClean(() -> context.destroy());
+
+            app.getInputManager().addMapping("LeftMouse", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+            app.getInputManager().addMapping("KeyA", new KeyTrigger(KeyInput.KEY_A));
+            app.getInputManager().addListener(new ActionListener() {
+                @Override
+                public void onAction(String name, boolean isPressed, float tpf) {
+
+                    Vector2f click2d = app.getInputManager().getCursorPosition();
+
+                    MouseButtonEvent evt = new MouseButtonEvent(0, isPressed, (int)click2d.getX(), (int)click2d.getY());
+                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
+
+                }
+            }, "LeftMouse");
+            app.getInputManager().addListener(new ActionListener() {
+                @Override
+                public void onAction(String name, boolean isPressed, float tpf) {
+
+                    KeyInputEvent evt = new KeyInputEvent(KeyInput.KEY_A, 'a', isPressed, false);
+                    jFxManager.getInputAdapter().apply(evt, e -> System.out.println(e.isConsumed()));
+                }
+            }, "KeyA");
         });
         app.start();
     }
@@ -62,9 +118,12 @@ public class StaticLayers {
             Group root = new Group();
             Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
             scene.setFill(new Color(0,0,0,0)); //transparent
+            scene.addEventHandler(Event.ANY, event -> {
+                System.out.println("Unhandled event at " +num+": "+event);
+            });
 
             // load the image
-            Image image = new Image("http://www.be.unsw.edu.au/sites/all/modules/media_gallery/images/empty_gallery.png");
+            Image image = new Image("/com/jme3/jfx/example/jME3-logo.png");
 
             // simple displays ImageView the image as is
             ImageView iv = new ImageView();
@@ -77,6 +136,15 @@ public class StaticLayers {
             primaryStage.setTitle("FxApp");
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            //change ordering after some time
+            PauseTransition pause = new PauseTransition(Duration.seconds(ThreadLocalRandom.current().nextInt(1, 5 + 1)));
+            pause.setOnFinished(a -> {
+                primaryStage.toFront();
+                pause.setDuration(Duration.seconds(ThreadLocalRandom.current().nextInt(1, 5 + 1)));
+                pause.playFromStart();
+            });
+            pause.playFromStart();
         };
     }
 }

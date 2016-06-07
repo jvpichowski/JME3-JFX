@@ -10,7 +10,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.system.AppSettings;
 
 /**
- * JmeForImageView create a jme'SimpleApplication viewable into an JavaFX's ImageView.
+ * JmeForImageView renderToFullscreen a jme'SimpleApplication viewable into an JavaFX's ImageView.
  *
  * You can manage the wrapped SimpleApplication by calling enqueue (by example to add/remove
  * AppState, Node, Light, to change the AppSettings...).

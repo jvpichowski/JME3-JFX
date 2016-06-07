@@ -55,6 +55,9 @@ abstract class BaseContext implements Context {
      */
     @Override
     public void create(JFxManager jfxManager) {
+        if(isCreated()){
+            throw new IllegalStateException("Context is already created");
+        }
         this.jFxManager = jfxManager;
         this.application = jfxManager.getApplication();
         created = true;

@@ -6,7 +6,7 @@ import com.sun.javafx.cursor.CursorType;
 public interface CursorDisplayProvider {
 
 	/**
-	 * called by the JFxManager during startup, should be used to create the necessary cursors
+	 * called by the JFxManager during startup, should be used to renderToFullscreen the necessary cursors
 	 * 
 	 * @param normal
 	 */

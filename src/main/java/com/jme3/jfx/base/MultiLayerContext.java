@@ -6,39 +6,30 @@ import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
-import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Created by jan on 06.06.16.
  */
-final class MultiLayerFullscreen extends BaseContext {
+class MultiLayerContext extends BaseContext {
 
     private InputAdapter.InputListener inputListener;
 
-    private ViewPort layerViewPort;
     private Node layerNode;
-    private final Consumer<Float> updater = tpf -> onUpdate(tpf);
 
     private boolean hasFocus = false;
 
-    private final ViewPort viewPort;
-    private final int width;
-    private final int height;
     private final boolean staticLayers;
+    private final RenderSystem renderSystem;
 
-    public MultiLayerFullscreen(ViewPort viewPort, boolean staticLayers) {
-        this.viewPort = viewPort;
-        this.width = viewPort.getCamera().getWidth();
-        this.height = viewPort.getCamera().getHeight();
+    public MultiLayerContext(RenderSystem renderSystem, boolean staticLayers) {
         this.staticLayers = staticLayers;
+        this.renderSystem = renderSystem;
     }
 
     /**
@@ -50,24 +41,11 @@ final class MultiLayerFullscreen extends BaseContext {
      */
     @Override
     public void create(JFxManager jfxManager) {
-        if(isCreated()){
-            throw new IllegalStateException("Context is already created");
-        }
         super.create(jfxManager);
-        Camera layerCam = new Camera(width, height);
-        layerViewPort = getJFxManager().getApplication().getRenderManager().createPostView(getName(), layerCam);
-        layerViewPort.setClearFlags(false, false, false);
-        layerNode = new Node("Root node of "+getName());
-        layerViewPort.attachScene(layerNode);
+        renderSystem.create(this);
+        layerNode = renderSystem.getScene();
         inputListener = new InputListenerImpl();
         getJFxManager().getInputAdapter().register(inputListener);
-        getJFxManager().addOnUpdate(updater);
-    }
-
-    private void onUpdate(float tpf){
-        layerNode.updateLogicalState(tpf);
-//        layerNode.updateModelBound();
-        layerNode.updateGeometricState();
     }
 
 
@@ -80,11 +58,9 @@ final class MultiLayerFullscreen extends BaseContext {
             super.destroy();
             return;
         }
-        getJFxManager().removeOnUpdate(updater);
         getJFxManager().getInputAdapter().unregister(inputListener);
         inputListener = null;
-        layerViewPort.detachScene(layerNode);
-        getJFxManager().getApplication().getRenderManager().removePostView(layerViewPort);
+        renderSystem.destroy();
         super.destroy();
     }
 
@@ -97,7 +73,7 @@ final class MultiLayerFullscreen extends BaseContext {
 
     @Override
     public Layer createLayer(FxApplication application) {
-        FxContainer fxContainer = new FxContainer(width, height);
+        FxContainer fxContainer = new FxContainer(renderSystem.getWidth(), renderSystem.getHeight());
         fxContainer.create(this);
         LayerImpl layer = new LayerImpl(fxContainer);
         try {
@@ -158,7 +134,7 @@ final class MultiLayerFullscreen extends BaseContext {
 
             //converting happens in the context
             final int x = jME_x;
-            final int y = height - jME_y;
+            final int y = renderSystem.getHeight() - jME_y;
 
             //ordered because getLayers() returns an ordered list
             Optional<Layer> consumer = getLayers().stream().filter(layer -> {
@@ -213,7 +189,7 @@ final class MultiLayerFullscreen extends BaseContext {
         private float y = 0;
 
         public LayerImpl(FxContainer fxContainer) {
-            super(MultiLayerFullscreen.this, fxContainer);
+            super(MultiLayerContext.this, fxContainer);
         }
 
         public void setZPosition(float z){
@@ -257,8 +233,7 @@ final class MultiLayerFullscreen extends BaseContext {
                 material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
                 geom.setQueueBucket(RenderQueue.Bucket.Gui);
                 geom.setMaterial(material);
-                ((Node) viewPort.getScenes().get(0)).attachChild(geom);
-                //layerNode.attachChild(geom);
+                layerNode.attachChild(geom);
             });
         }
 
