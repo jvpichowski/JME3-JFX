@@ -141,8 +141,10 @@ public final class JFxManager extends BaseAppState {
 
 
     /**
+     * If exitOnClean the Java Fx Platform will be destroyed when
+     * this AppState is cleaned.
      *
-     * @param exitOnCleanup
+     * @param exitOnCleanup default: true
      */
     public void exitOnCleanup(boolean exitOnCleanup){
         this.exitOnCleanup = exitOnCleanup;
