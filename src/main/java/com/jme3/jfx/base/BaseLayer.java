@@ -5,10 +5,12 @@ import com.jme3.jfx.Layer;
 import com.sun.javafx.embed.AbstractEvents;
 import javafx.scene.Scene;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
+import java.util.function.BiPredicate;
 
 /**
  * Created by jan on 05.06.16.
@@ -17,9 +19,9 @@ abstract class BaseLayer implements Layer{
 
     private final FxContainer fxContainer;
     private final BaseContext context;
+    private BiPredicate<Layer, Point> inputConsumerMode = InputConsumerModes.Discard;
 
     private boolean hasFocus = false;
-    private InputMode inputMode = InputMode.LEAK;
 
     private float x = 0;
     private float y = 0;
@@ -33,7 +35,7 @@ abstract class BaseLayer implements Layer{
         return context;
     }
 
-    protected FxContainer getFxContainer(){
+    FxContainer getFxContainer(){
         return fxContainer;
     }
 
@@ -71,12 +73,8 @@ abstract class BaseLayer implements Layer{
     }
 
     @Override
-    public void setInputMode(InputMode mode) {
-        this.inputMode = mode;
-    }
-
-    protected InputMode getInputMode(){
-        return inputMode;
+    public void setInputConsumerMode(BiPredicate<Layer, Point> mode) {
+        this.inputConsumerMode = mode;
     }
 
     @Override
@@ -113,20 +111,48 @@ abstract class BaseLayer implements Layer{
     }
 
     @Override
-    public void setTitle(String title) {
+    public final void setTitle(String title) {
         fxContainer.setName(title);
     }
 
 
+    /**
+     * Convert the x-coordinate from context space to layer space
+     *
+     * @param context_x
+     * @return
+     */
     protected final float contextToLayerX(float context_x){
         return context_x-getX();
     }
 
+    /**
+     * Convert the y-coordinate from context space to layer space
+     *
+     * @param context_y
+     * @return
+     */
     protected final float contextToLayerY(float context_y){
         return context_y-getY();
     }
 
-    protected boolean isCovered(int layer_x, int layer_y, int alphaLimit) {
+    /**
+     * Default behaviour:
+     * If the alpha value of the scene is not 0 then the scene
+     * is allowed to consume the input.
+     *
+     * @param layer_x
+     * @param layer_y
+     * @return true if this layer is allowed to consume the input
+     */
+    protected boolean consumeInput(int layer_x, int layer_y) {
+        //use injected lambda instead Predicate<Integer, Integer>
+        // InputConsumerModes.AlphaBased with and without threshold
+        // InputConsumerModes.Leak nothing (Discard)
+        // InputConsumerModes.SceneBased
+        // InputConsumerModes.Always
+
+        int alphaLimit = 0;
 
         if (layer_x < 0 || layer_y >= getWidth()) {
             return false;
@@ -146,7 +172,7 @@ abstract class BaseLayer implements Layer{
             return false;
         }
         //if not covered return false here - release focus?
-        if(!isCovered(x, y, 0)){
+        if(!inputConsumerMode.test(BaseLayer.this, new Point(x,y))){
             loseFocus();
             return false;
         }

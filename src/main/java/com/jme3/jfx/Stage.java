@@ -5,6 +5,9 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.scene.Scene;
 
+import java.awt.*;
+import java.util.function.BiPredicate;
+
 /**
  * Created by jan on 13.05.16.
  *
@@ -43,6 +46,10 @@ public interface Stage {
 
     @Deprecated
     class Layer implements com.jme3.jfx.Layer{
+        @Override
+        public void setInputConsumerMode(BiPredicate<com.jme3.jfx.Layer, Point> mode) {
+
+        }
 
         private Stage stage;
 
@@ -88,11 +95,6 @@ public interface Stage {
         @Override
         public boolean hasFocus() {
             return stage.hasFocus();
-        }
-
-        @Override
-        public void setInputMode(InputMode mode) {
-
         }
 
         @Override

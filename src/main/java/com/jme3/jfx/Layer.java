@@ -2,6 +2,10 @@ package com.jme3.jfx;
 
 import javafx.scene.Scene;
 
+import java.awt.*;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+
 /**
  * Created by jan on 26.05.16.
  *
@@ -23,18 +27,11 @@ public interface Layer {
 
     void setScene(Scene scene);
 
-    enum InputMode{
-        LEAK,
-        EAT_UP,
-        ALPHA,
-        FX_BASED
-    }
-
     void loseFocus();
     void grabFocus();
     boolean hasFocus();
 
-    void setInputMode(InputMode mode);
+    void setInputConsumerMode(BiPredicate<Layer, Point> mode);
 
     //TODO add config param that shows the layer at creating to save a frame
     void show();
