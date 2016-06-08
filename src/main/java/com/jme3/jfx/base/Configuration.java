@@ -42,6 +42,12 @@ public final class Configuration {
     }
 
 
+    /**
+     * The converter is always called from the jME3 Render Thread
+     *
+     * @param inputConverter
+     * @return
+     */
     public Configuration setInputConverter(BiFunction<Context, Point, Point> inputConverter){
         this.inputConverter = inputConverter;
         return this;
