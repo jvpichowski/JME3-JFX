@@ -26,14 +26,17 @@ import java.util.List;
  */
 final class SingleLayerFullscreen extends BaseContext{
 
-    private ViewPort viewPort;
-    private Geometry geom;
-    private Material material;
+//    private final ViewPort viewPort;
+    private final RenderSystem renderSystem;
+//    private Geometry geom;
+//    private Material material;
 
     private LayerImpl layer;
 
-    SingleLayerFullscreen(ViewPort viewPort){
-        this.viewPort = viewPort;
+
+    SingleLayerFullscreen(RenderSystem renderSystem){
+//        this.viewPort = viewPort;
+        this.renderSystem = renderSystem;
     }
 
     @Override
@@ -41,7 +44,7 @@ final class SingleLayerFullscreen extends BaseContext{
         if(layer != null){
             throw new IllegalStateException("This fxcontext doesn't allow multiple layers");
         }
-        FxContainer fxContainer = new FxContainer(viewPort.getCamera().getWidth(), viewPort.getCamera().getHeight());
+        FxContainer fxContainer = new FxContainer(renderSystem.getWidth(), renderSystem.getHeight());
         fxContainer.create(this);
         layer = new LayerImpl(fxContainer);
         try {
@@ -64,7 +67,8 @@ final class SingleLayerFullscreen extends BaseContext{
 
     @Override
     public void destroy() {
-        geom.removeFromParent();
+//        geom.removeFromParent();
+        renderSystem.destroy();
         if(layer != null){
             getJFxManager().getInputAdapter().unregister(layer);
             layer.close();
@@ -158,20 +162,22 @@ final class SingleLayerFullscreen extends BaseContext{
         @Override
         public void show() {
             getApplication().enqueue(() -> {
-                geom = new Geometry(getName(), new Quad(getWidth(), getHeight(), true));
-
-                material = new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-                material.setTexture("ColorMap", getFxContainer().getTexture());
-                material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                geom.setQueueBucket(RenderQueue.Bucket.Gui);
-                geom.setMaterial(material);
-                ((Node) viewPort.getScenes().get(0)).attachChild(geom);
+                renderSystem.create(SingleLayerFullscreen.this, getFxContainer().getTexture());
+//                geom = new Geometry(getName(), new Quad(getWidth(), getHeight(), true));
+//
+//                material = new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+//                material.setTexture("ColorMap", getFxContainer().getTexture());
+//                material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+//                geom.setQueueBucket(RenderQueue.Bucket.Gui);
+//                geom.setMaterial(material);
+//                ((Node) viewPort.getScenes().get(0)).attachChild(geom);
             });
         }
 
         @Override
         public void close() {
-            getApplication().enqueue(() ->  geom.removeFromParent());
+//            getApplication().enqueue(() ->  geom.removeFromParent());
+            getApplication().enqueue(renderSystem::destroy);
             super.close();
             //to prevent endless loop
             //it is correct to first clear the layer

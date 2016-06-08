@@ -24,7 +24,14 @@ import java.util.function.Consumer;
  */
 public final class RenderSystem {
 
-    private RenderSystem(){}
+
+    private final int width;
+    private final int height;
+
+    private RenderSystem(int width, int height){
+        this.width = width;
+        this.height = height;
+    }
 
     /**
      * Creates a post ViewPort with the given size to whom the layers are rendered.
@@ -34,9 +41,7 @@ public final class RenderSystem {
      * @return
      */
     public static RenderSystem renderToFullscreen(int screenWidth, int screenHeight){
-        RenderSystem rs = new RenderSystem();
-        rs.width = screenWidth;
-        rs.height = screenHeight;
+        RenderSystem rs = new RenderSystem(screenWidth, screenHeight);
         rs.toTexture = false;
         return rs;
     }
@@ -48,9 +53,7 @@ public final class RenderSystem {
      * @return
      */
     public static RenderSystem renderToViewPort(ViewPort viewPort){
-        RenderSystem rs = new RenderSystem();
-        rs.viewPort = viewPort;
-        rs.toTexture = false;
+        RenderSystem rs = new RenderSystem(viewPort.getCamera().getWidth(), viewPort.getCamera().getHeight());
         return rs;
     }
 
@@ -65,9 +68,7 @@ public final class RenderSystem {
      * @return
      */
     public static RenderSystem renderToTexture(int width, int height, Consumer<Texture2D> accessor){
-        RenderSystem rs = new RenderSystem();
-        rs.width = width;
-        rs.height = height;
+        RenderSystem rs = new RenderSystem(width, height);
         rs.toTexture = true;
         rs.accessor = accessor;
         return rs;
@@ -83,9 +84,7 @@ public final class RenderSystem {
      * @return
      */
     public static RenderSystem renderToGeometry(int width, int height, Geometry geom){
-        RenderSystem rs = new RenderSystem();
-        rs.width = width;
-        rs.height = height;
+        RenderSystem rs = new RenderSystem(width, height);
         rs.toTexture = true;
         rs.targetGeometry = geom;
         return rs;
@@ -99,8 +98,6 @@ public final class RenderSystem {
 
     //Settings
     private ViewPort viewPort = null;
-    private int width = 0;
-    private int height = 0;
     private boolean toTexture = false;
     private Consumer<Texture2D> accessor;
     private Geometry targetGeometry = null;
@@ -196,10 +193,11 @@ public final class RenderSystem {
                 Geometry geom = new Geometry(context.getName()+" geometry", new Quad(getWidth(), getHeight(), true));
 
                 Material material = new Material(context.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-                material.setTexture("ColorMap", texture);
+                material.setTexture("ColorMap", contextTexture);
                 material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
                 geom.setQueueBucket(RenderQueue.Bucket.Gui);
                 geom.setMaterial(material);
+                geom.setLocalTranslation(0,0,1);
                 scene.attachChild(geom);
             }
         }
@@ -222,12 +220,20 @@ public final class RenderSystem {
 //        return texture;
 //    }
 
+    /**
+     * Will be available before creation
+     * @return
+     */
     public int getWidth(){
-        return viewPort.getCamera().getWidth();
+        return width;
     }
 
+    /**
+     * Will be available before creation
+     * @return
+     */
     public int getHeight(){
-        return viewPort.getCamera().getHeight();
+        return height;
     }
 
     void destroy(){

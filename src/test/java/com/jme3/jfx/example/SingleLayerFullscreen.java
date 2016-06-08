@@ -7,6 +7,7 @@ import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
+import com.jme3.jfx.base.RenderSystem;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
@@ -49,36 +50,37 @@ public class SingleLayerFullscreen {
             app.getInputManager().setCursorVisible(true);
 
             jFxManager.onInit(() -> System.out.println("Init fx"));
-            Layer layer = jFxManager.launch(Context.create(new Configuration().setViewPort(app.getGuiViewPort())),
+            Layer layer = jFxManager.launch(Context.create(
+                    new Configuration().setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()))),
                     primary -> {
 
-                //create a scene
-                Group root = new Group();
-                Scene scene = new Scene(root);
-                //print out every event which is not handled by the button
-                scene.addEventHandler(Event.ANY, event -> {
-                    System.out.println("Unhandled event: "+event);
-                });
-                //make scene transparent so you can see the cube in the background
-                scene.setFill(new Color(0,0,0,0));
+                        //create a scene
+                        Group root = new Group();
+                        Scene scene = new Scene(root);
+                        //make scene transparent so you can see the cube in the background
+                        scene.setFill(new Color(0,0,0,0));
+                        //print out every event which is not handled by the button
+                        scene.addEventHandler(Event.ANY, event -> {
+                            System.out.println("Unhandled event: "+event);
+                        });
 
-                // load the image
-                Image image = new Image("/com/jme3/jfx/example/jME3-logo.png");
+                        // load the image
+                        Image image = new Image("/com/jme3/jfx/example/jME3-logo.png");
 
-                // simple displays ImageView the image as is
-                ImageView iv1 = new ImageView();
-                iv1.setImage(image);
+                        // simple displays ImageView the image as is
+                        ImageView iv1 = new ImageView();
+                        iv1.setImage(image);
 
-                Button b = new Button("klick me");
-                b.setOnMouseClicked(event -> b.setText(b.getText()+"."));
+                        Button b = new Button("klick me");
+                        b.setOnMouseClicked(event -> b.setText(b.getText()+"."));
 
-                root.getChildren().add(iv1);
-                root.getChildren().add(b);
+                        root.getChildren().add(iv1);
+                        root.getChildren().add(b);
 
-                //show the scene
-                primary.setScene(scene);
-                primary.show();
-            });
+                        //show the scene
+                        primary.setScene(scene);
+                        primary.show();
+                    });
 
             //if you close the only layer the whole context will be closed
             jFxManager.onClean(() -> layer.close());

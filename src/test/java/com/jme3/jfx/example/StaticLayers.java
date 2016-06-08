@@ -80,7 +80,7 @@ public class StaticLayers {
             l0.toFront();
             l1.toBack();
 
-            jFxManager.onClean(() -> context.destroy());
+            jFxManager.onClean(context::destroy);
         });
         app.start();
     }
