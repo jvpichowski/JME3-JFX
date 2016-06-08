@@ -4,13 +4,6 @@ import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.InputAdapter;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
-import com.jme3.material.Material;
-import com.jme3.material.RenderState;
-import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.shape.Quad;
 import com.sun.javafx.embed.AbstractEvents;
 
 import java.awt.event.KeyEvent;
@@ -26,16 +19,12 @@ import java.util.List;
  */
 final class SingleLayerFullscreen extends BaseContext{
 
-//    private final ViewPort viewPort;
     private final RenderSystem renderSystem;
-//    private Geometry geom;
-//    private Material material;
 
     private LayerImpl layer;
 
 
     SingleLayerFullscreen(RenderSystem renderSystem){
-//        this.viewPort = viewPort;
         this.renderSystem = renderSystem;
     }
 
@@ -67,7 +56,6 @@ final class SingleLayerFullscreen extends BaseContext{
 
     @Override
     public void destroy() {
-//        geom.removeFromParent();
         renderSystem.destroy();
         if(layer != null){
             getJFxManager().getInputAdapter().unregister(layer);
@@ -163,20 +151,11 @@ final class SingleLayerFullscreen extends BaseContext{
         public void show() {
             getApplication().enqueue(() -> {
                 renderSystem.create(SingleLayerFullscreen.this, getFxContainer().getTexture());
-//                geom = new Geometry(getName(), new Quad(getWidth(), getHeight(), true));
-//
-//                material = new Material(getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-//                material.setTexture("ColorMap", getFxContainer().getTexture());
-//                material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-//                geom.setQueueBucket(RenderQueue.Bucket.Gui);
-//                geom.setMaterial(material);
-//                ((Node) viewPort.getScenes().get(0)).attachChild(geom);
             });
         }
 
         @Override
         public void close() {
-//            getApplication().enqueue(() ->  geom.removeFromParent());
             getApplication().enqueue(renderSystem::destroy);
             super.close();
             //to prevent endless loop
