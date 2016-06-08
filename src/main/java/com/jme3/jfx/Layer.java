@@ -42,6 +42,8 @@ public interface Layer {
 
     int getWidth();
     int getHeight();
+    float getX();
+    float getY();
 
     void setTitle(String title);
 

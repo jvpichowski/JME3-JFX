@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import java.awt.event.KeyEvent;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
 
 /**
  * Created by jan on 05.06.16.
@@ -19,6 +20,9 @@ abstract class BaseLayer implements Layer{
 
     private boolean hasFocus = false;
     private InputMode inputMode = InputMode.LEAK;
+
+    private float x = 0;
+    private float y = 0;
 
     public BaseLayer(BaseContext context, FxContainer fxContainer){
         this.context = context;
@@ -90,9 +94,50 @@ abstract class BaseLayer implements Layer{
         return fxContainer.getHeight();
     }
 
+    protected final void setX(float x){
+        this.x = x;
+    }
+
+    protected final void setY(float y){
+        this.y = y;
+    }
+
+    @Override
+    public final float getX() {
+        return x;
+    }
+
+    @Override
+    public final float getY() {
+        return y;
+    }
+
     @Override
     public void setTitle(String title) {
         fxContainer.setName(title);
+    }
+
+
+    protected final float contextToLayerX(float context_x){
+        return context_x-getX();
+    }
+
+    protected final float contextToLayerY(float context_y){
+        return context_y-getY();
+    }
+
+    protected boolean isCovered(int layer_x, int layer_y, int alphaLimit) {
+
+        if (layer_x < 0 || layer_y >= getWidth()) {
+            return false;
+        }
+        if (layer_y < 0 || layer_y >= getHeight()) {
+            return false;
+        }
+
+        final ByteBuffer data = fxContainer.getImage().getData(0);
+        final int alpha = Byte.toUnsignedInt(data.get(fxContainer.getAlphaByteOffset() + 4 * (layer_y * getWidth() + layer_x)));
+        return alpha > alphaLimit;
     }
 
 
@@ -101,6 +146,10 @@ abstract class BaseLayer implements Layer{
             return false;
         }
         //if not covered return false here - release focus?
+        if(!isCovered(x, y, 0)){
+            loseFocus();
+            return false;
+        }
 
         if(eventType == AbstractEvents.MOUSEEVENT_PRESSED){
             grabFocus();

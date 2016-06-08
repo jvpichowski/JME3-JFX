@@ -156,13 +156,6 @@ class MultiLayerContext extends BaseContext {
             //ordered because getLayers() returns an ordered list
             Optional<Layer> consumer = getLayers().stream().filter(layer -> {
                 LayerImpl l = (LayerImpl) layer;
-                //TODO move to base class
-                if(x < l.getX() || x > l.getX()+l.getWidth()){
-                    return false;
-                }
-                if(y < l.getY() || y > l.getY()+l.getHeight()){
-                    return false;
-                }
                 if(l.applyMouseInput(getJFxManager(), eventType, button, wheelRotation,
                         x-(int)l.getX(), y-(int)l.getY(), x, y)){
                     return true;
@@ -202,9 +195,6 @@ class MultiLayerContext extends BaseContext {
         private Geometry geom;
         private Material material;
 
-        private float x = 0;
-        private float y = 0;
-
         public LayerImpl(FxContainer fxContainer) {
             super(MultiLayerContext.this, fxContainer);
         }
@@ -216,21 +206,13 @@ class MultiLayerContext extends BaseContext {
                     z+1));//just in front of the camera
         }
 
-        public float getX(){
-            return x;
-        }
-
-        public float getY(){
-            return y;
-        }
-
         @Override
         public void setPosition(float x, float y) {
             if(staticLayers){
                 throw new IllegalStateException("Not supported by this context");
             }
-            this.x = x;
-            this.y = y;
+            setX(x);
+            setY(y);
         }
 
         @Override
