@@ -17,13 +17,9 @@ public final class InputConsumerModes {
 
     public static final BiPredicate<Layer, Point> AlphaBased(final int threshold){
         return (l,p) -> {
-            if (p.x < 0 || p.x >= l.getWidth()) {
+            if(!AllInArea.test(l,p)){
                 return false;
             }
-            if (p.y < 0 || p.x >= l.getHeight()) {
-                return false;
-            }
-
             final ByteBuffer data = ((BaseLayer)l).getFxContainer().getImage().getData(0);
             final int alpha = Byte.toUnsignedInt(data.get(((BaseLayer)l).getFxContainer().getAlphaByteOffset() + 4 * (p.y * l.getWidth() + p.x)));
             return alpha > threshold;
