@@ -19,7 +19,7 @@ import java.util.function.BiFunction;
  *
  * Created by jan on 16.05.16.
  */
-final class SingleLayerFullscreen extends BaseContext{
+final class SingleLayerContext extends BaseContext{
 
     private final RenderSystem renderSystem;
     private final BiFunction<Context, Point, Point> inputConverter;
@@ -28,7 +28,7 @@ final class SingleLayerFullscreen extends BaseContext{
 
 
 
-    SingleLayerFullscreen(RenderSystem renderSystem, BiFunction<Context, Point, Point> inputConverter){
+    SingleLayerContext(RenderSystem renderSystem, BiFunction<Context, Point, Point> inputConverter){
         this.renderSystem = renderSystem;
         this.inputConverter = inputConverter;
     }
@@ -149,13 +149,13 @@ final class SingleLayerFullscreen extends BaseContext{
     private final class LayerImpl extends BaseLayer implements InputAdapter.InputListener {
 
         public LayerImpl(FxContainer fxContainer){
-            super(SingleLayerFullscreen.this, fxContainer);
+            super(SingleLayerContext.this, fxContainer);
         }
 
         @Override
         public void show() {
             getApplication().enqueue(() -> {
-                renderSystem.create(SingleLayerFullscreen.this, getFxContainer().getTexture());
+                renderSystem.create(SingleLayerContext.this, getFxContainer().getTexture());
             });
         }
 
@@ -188,7 +188,7 @@ final class SingleLayerFullscreen extends BaseContext{
             }
 
             //converting happens in the context
-            Point contextClick = inputConverter.apply(SingleLayerFullscreen.this, new Point(jME_x, jME_y));
+            Point contextClick = inputConverter.apply(SingleLayerContext.this, new Point(jME_x, jME_y));
             if(contextClick == null){
                 return false;
             }
