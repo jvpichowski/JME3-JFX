@@ -179,7 +179,8 @@ public final class RenderSystem {
                     Material material = new Material(context.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
                     material.setTexture("ColorMap", texture);
                     material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                    targetGeometry.setQueueBucket(RenderQueue.Bucket.Gui);
+//                    targetGeometry.setQueueBucket(RenderQueue.Bucket.Gui);
+                    targetGeometry.setQueueBucket(RenderQueue.Bucket.Transparent);
                     targetGeometry.setMaterial(material);
                 }
             }
@@ -195,7 +196,7 @@ public final class RenderSystem {
                 Material material = new Material(context.getApplication().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
                 material.setTexture("ColorMap", contextTexture);
                 material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                geom.setQueueBucket(RenderQueue.Bucket.Gui);
+                geom.setQueueBucket(RenderQueue.Bucket.Gui);//Change to Transparent?
                 geom.setMaterial(material);
                 geom.setLocalTranslation(0,0,1);
                 scene.attachChild(geom);
