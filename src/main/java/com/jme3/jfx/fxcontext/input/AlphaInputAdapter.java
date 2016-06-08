@@ -259,7 +259,7 @@ public final class AlphaInputAdapter implements InputAdapter {
         }
         final ByteBuffer data = context.getImage().getData(0);
         final int alpha = Byte.toUnsignedInt(data.get(this.alphaByteOffset + 4 * (y * context.getStage().getWidth() + x)));
-        return alpha > alphaByteOffset;
+        return alpha > alphaLimit;
     }
 
 }
