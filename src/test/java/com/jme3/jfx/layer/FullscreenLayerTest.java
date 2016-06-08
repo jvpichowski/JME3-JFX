@@ -61,6 +61,7 @@ public class FullscreenLayerTest {
 
 
         jFxManager.onInit(() -> {
+            jFxManager.beginInput();
             app.getInputManager().setCursorVisible(true);
 
             jFxManager.onInit(() -> System.out.println("Init fx"));
