@@ -101,6 +101,7 @@ abstract class BaseContext implements Context {
 
     protected void addLayer(Layer layer){
         layers.add(layer);
+//        pushFront(layer);
         reorderLayers();
     }
 
@@ -111,6 +112,10 @@ abstract class BaseContext implements Context {
 
     protected abstract void reorderLayers();
 
+    /**
+     * Call only from jME Render Thread
+     * @param layer
+     */
     public void pushFront(Layer layer){
         if(layers.size() <= 1){
             return;
@@ -120,6 +125,10 @@ abstract class BaseContext implements Context {
         reorderLayers();
     }
 
+    /**
+     * Call only from jME Render Thread
+     * @param layer
+     */
     public void pushBack(Layer layer){
         if(layers.size() <= 1){
             return;

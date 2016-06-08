@@ -302,6 +302,8 @@ final class FxContainer {
 
     /*
      * A notification about mouse event received by host container.
+     * This method could be called from any thread and will be delivered
+     * in the Java Fx Thread.
      */
     public void mouseEvent(int type, int button,
                            boolean primaryBtnDown, boolean middleBtnDown, boolean secondaryBtnDown,
@@ -317,6 +319,8 @@ final class FxContainer {
     }
     /*
      * A notification about key event received by host container.
+     * This method could be called from any thread and will be delivered
+     * in the Java Fx Thread.
      */
     public void keyEvent(int type, int key, char[] chars, int modifiers){
         jfxManager.enqueue(() -> scenePeer.keyEvent(type, key, chars, modifiers));

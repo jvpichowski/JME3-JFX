@@ -40,14 +40,20 @@ abstract class BaseLayer implements Layer{
     }
 
 
+    /**
+     * Could be called from any thread.
+     */
     @Override
     public void toFront() {
-        context.pushFront(this);
+        context.getApplication().enqueue(() -> context.pushFront(this));
     }
 
+    /**
+     * Could be called from any thread.
+     */
     @Override
     public void toBack() {
-        context.pushBack(this);
+        context.getApplication().enqueue(() -> context.pushBack(this));
     }
 
     @Override
@@ -63,8 +69,6 @@ abstract class BaseLayer implements Layer{
     @Override
     public void grabFocus() {
         hasFocus = true;
-        //really suited?
-//        toFront();
     }
 
     @Override
@@ -184,7 +188,6 @@ abstract class BaseLayer implements Layer{
             grabFocus();
         }
 
-        //converting happens in the context
         getFxContainer().mouseEvent(eventType, button,
                 jFxManager.getInputAdapter().getMouseButtonState(0),
                 jFxManager.getInputAdapter().getMouseButtonState(1),

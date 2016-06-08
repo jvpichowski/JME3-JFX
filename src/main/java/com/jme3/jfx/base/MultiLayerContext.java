@@ -12,7 +12,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Quad;
 
 import java.awt.*;
-import java.util.Optional;
+import java.util.ListIterator;
 import java.util.function.BiFunction;
 
 /**
@@ -153,23 +153,39 @@ class MultiLayerContext extends BaseContext {
             int x = click.x;
             int y = click.y;
 
-            //ordered because getLayers() returns an ordered list
-            Optional<Layer> consumer = getLayers().stream().filter(layer -> {
-                LayerImpl l = (LayerImpl) layer;
+            ListIterator li = getLayers().listIterator(getLayers().size());
+
+            // Iterate in reverse.
+            while(li.hasPrevious()) {
+                LayerImpl l = (LayerImpl) li.previous();
                 if(l.applyMouseInput(getJFxManager(), eventType, button, wheelRotation,
                         x-(int)l.getX(), y-(int)l.getY(), x, y)){
+                    grabFocus();
                     return true;
                 }
-                return false;
-            }).findFirst(); //stops searching when one layer returns true
-
-            if(consumer.isPresent()){
-                grabFocus();
-            }else{
-                loseFocus();
             }
 
-            return consumer.isPresent();
+            loseFocus();
+            return false;
+
+
+//            //ordered because getLayers() returns an ordered list
+//            Optional<Layer> consumer = getLayers().stream().filter(layer -> {
+//                LayerImpl l = (LayerImpl) layer;
+//                if(l.applyMouseInput(getJFxManager(), eventType, button, wheelRotation,
+//                        x-(int)l.getX(), y-(int)l.getY(), x, y)){
+//                    return true;
+//                }
+//                return false;
+//            }).findFirst(); //stops searching when one layer returns true
+
+//            if(consumer.isPresent()){
+//                grabFocus();
+//            }else{
+//                loseFocus();
+//            }
+
+//            return consumer.isPresent();
         }
 
         /**
@@ -203,7 +219,7 @@ class MultiLayerContext extends BaseContext {
             getApplication().enqueue(() -> geom.setLocalTranslation(
                     geom.getLocalTranslation().getX(),
                     geom.getLocalTranslation().getY(),
-                    z+1));//just in front of the camera
+                    (z+1)));//just in front of the camera
         }
 
         @Override
@@ -238,7 +254,7 @@ class MultiLayerContext extends BaseContext {
 
         @Override
         public void close() {
-            getApplication().enqueue(() ->  geom.removeFromParent());
+            getApplication().enqueue(geom::removeFromParent);
             removeLayer(this);
             super.close();
         }

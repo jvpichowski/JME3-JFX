@@ -5,24 +5,18 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
-import com.jme3.jfx.base.Configuration;
-import com.jme3.jfx.base.Context;
-import com.jme3.jfx.base.InputConverters;
-import com.jme3.jfx.base.RenderSystem;
+import com.jme3.jfx.base.*;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import javafx.animation.PauseTransition;
 import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by jan on 06.06.16.
@@ -48,11 +42,11 @@ public class StaticLayers {
             jFxManager.beginInput();
             Configuration config = new Configuration();
 
-            config.setRenderSystem(RenderSystem.renderToFullscreen(
-                    app.getGuiViewPort().getCamera().getWidth(),
-                    app.getGuiViewPort().getCamera().getHeight()));
+//            config.setRenderSystem(RenderSystem.renderToFullscreen(
+//                    app.getGuiViewPort().getCamera().getWidth(),
+//                    app.getGuiViewPort().getCamera().getHeight()));
 
-//            config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
+            config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
 
 //            config.setRenderSystem(RenderSystem.renderToTexture(200, 200, texture2D -> {
 //                Geometry geom = new Geometry("Java Fx Quad", new Quad(200, 200, true));
@@ -77,8 +71,8 @@ public class StaticLayers {
             context.createLayer(createFxApp(3));
             context.createLayer(createFxApp(4));
             //change ordering
-            l0.toFront();
-            l1.toBack();
+//            l0.toFront();
+//            l1.toBack();
 
             jFxManager.onClean(context::destroy);
         });
@@ -103,21 +97,16 @@ public class StaticLayers {
             iv.setImage(image);
             iv.setX(num * 50);
 
+            //push layer to front if the image gets clicked
+            iv.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> primaryStage.toFront());
+
             root.getChildren().add(iv);
 
             //show the stage
+            primaryStage.setInputConsumerMode(InputConsumerModes.StrictAlphaBased);
             primaryStage.setTitle("FxApp");
             primaryStage.setScene(scene);
             primaryStage.show();
-
-            //change ordering after some time
-            PauseTransition pause = new PauseTransition(Duration.seconds(ThreadLocalRandom.current().nextInt(1, 5 + 1)));
-            pause.setOnFinished(a -> {
-                primaryStage.toFront();
-                pause.setDuration(Duration.seconds(ThreadLocalRandom.current().nextInt(1, 5 + 1)));
-                pause.playFromStart();
-            });
-            pause.playFromStart();
         };
     }
 }
