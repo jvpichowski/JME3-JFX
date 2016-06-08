@@ -73,7 +73,7 @@ public class SingleLayerFullscreen {
                         ImageView iv1 = new ImageView();
                         iv1.setImage(image);
 
-                        Button b = new Button("klick me");
+                        Button b = new Button("click me");
                         b.setOnMouseClicked(event -> b.setText(b.getText()+"."));
 
                         root.getChildren().add(iv1);

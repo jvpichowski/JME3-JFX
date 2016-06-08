@@ -63,7 +63,7 @@ public class Button {
             Scene scene = new Scene(root);
             scene.setFill(new Color(0,0,0,0));
 
-            javafx.scene.control.Button b = new javafx.scene.control.Button("klick me");
+            javafx.scene.control.Button b = new javafx.scene.control.Button("click me");
             b.setOnMouseClicked(event -> b.setText(b.getText()+"."));
             root.getChildren().add(b);
 
