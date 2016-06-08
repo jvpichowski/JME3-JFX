@@ -128,9 +128,8 @@ public final class JFxManager extends BaseAppState {
 
         System.out.println("INIT JFxManager");
         PlatformImpl.startup(() -> {});
-        boolean useRecommendedJFXSettings = false;
+        boolean useRecommendedJFXSettings = true;
         if (useRecommendedJFXSettings) {
-
             System.setProperty("javafx.animation.fullspeed", "true"); // reduce laggyness of animations, bad for business apps great for games
             System.setProperty("prism.order", "sw"); // use software rendering, keep the gpu free for jme, use another core for jfx in software mode and all win
             System.setProperty("prism.vsync", "false"); // jme should limit rendering speed anyway or?
