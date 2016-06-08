@@ -27,7 +27,7 @@ public interface Context {
      */
     static Context create(Configuration config){
         if(config.singleLayer){
-            return new SingleLayerFullscreen(config.renderSystem);
+            return new SingleLayerFullscreen(config.renderSystem, config.inputConverter);
         }else{
             Context result = new MultiLayerContext(config.renderSystem, config.inputConverter, config.staticLayers);
             result.setName(config.name);

@@ -6,9 +6,11 @@ import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.sun.javafx.embed.AbstractEvents;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * Implementation
@@ -20,18 +22,21 @@ import java.util.List;
 final class SingleLayerFullscreen extends BaseContext{
 
     private final RenderSystem renderSystem;
+    private final BiFunction<Context, Point, Point> inputConverter;
 
     private LayerImpl layer;
 
 
-    SingleLayerFullscreen(RenderSystem renderSystem){
+
+    SingleLayerFullscreen(RenderSystem renderSystem, BiFunction<Context, Point, Point> inputConverter){
         this.renderSystem = renderSystem;
+        this.inputConverter = inputConverter;
     }
 
     @Override
     public Layer createLayer(FxApplication application){
         if(layer != null){
-            throw new IllegalStateException("This fxcontext doesn't allow multiple layers");
+            throw new IllegalStateException("This context doesn't allow multiple layers");
         }
         FxContainer fxContainer = new FxContainer(renderSystem.getWidth(), renderSystem.getHeight());
         fxContainer.create(this);
@@ -181,6 +186,15 @@ final class SingleLayerFullscreen extends BaseContext{
             if(!getFxContainer().isActive()){
                 return false;
             }
+
+            //converting happens in the context
+            Point contextClick = inputConverter.apply(SingleLayerFullscreen.this, new Point(jME_x, jME_y));
+            if(contextClick == null){
+                return false;
+            }
+            final int x = contextClick.x;
+            final int y = contextClick.y;
+
             //if not covered return false here - release focus?
 
             if(eventType == AbstractEvents.MOUSEEVENT_PRESSED){
@@ -189,10 +203,6 @@ final class SingleLayerFullscreen extends BaseContext{
             if(eventType == AbstractEvents.MOUSEEVENT_RELEASED){
                 grabFocus();
             }
-
-            //converting happens in the context
-            final int x = jME_x;
-            final int y = Math.round(getHeight()) - jME_y;
             getFxContainer().mouseEvent(eventType, button,
                     getJFxManager().getInputAdapter().getMouseButtonState(0),
                     getJFxManager().getInputAdapter().getMouseButtonState(1),
