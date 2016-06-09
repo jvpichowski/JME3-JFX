@@ -19,6 +19,10 @@ import java.util.function.Predicate;
  */
 public interface Layer {
 
+    static Layer fromFxml(String path){
+        throw new IllegalStateException("Not implemented yet");
+    }
+
     void toFront();
     void toBack();
 
