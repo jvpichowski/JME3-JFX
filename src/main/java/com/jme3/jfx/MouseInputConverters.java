@@ -2,7 +2,6 @@ package com.jme3.jfx;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.jfx.utils.VertexUtils;
 import com.jme3.math.FastMath;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
@@ -90,8 +89,8 @@ public final class MouseInputConverters {
         Vector2f t2 = new Vector2f();
 
 
-        VertexUtils.getTriangle(collision.getGeometry().getMesh(), VertexBuffer.Type.Position, ti, p0, p1, p2);
-        VertexUtils.getTriangle(collision.getGeometry().getMesh(), VertexBuffer.Type.TexCoord, ti, t0, t1, t2);
+        Utilities.getTriangle(collision.getGeometry().getMesh(), VertexBuffer.Type.Position, ti, p0, p1, p2);
+        Utilities.getTriangle(collision.getGeometry().getMesh(), VertexBuffer.Type.TexCoord, ti, t0, t1, t2);
 
         Vector3f cp = collision.getContactPoint();
         collision.getGeometry().worldToLocal(cp, cp);

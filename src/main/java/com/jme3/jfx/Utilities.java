@@ -1,18 +1,30 @@
-package com.jme3.jfx.utils;
+package com.jme3.jfx;
 
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.scene.mesh.IndexBuffer;
 import com.jme3.util.BufferUtils;
+import javafx.scene.paint.Color;
 
 import java.nio.FloatBuffer;
 
 /**
  * Created by jan on 14.05.16.
  */
-public class VertexUtils {
+public class Utilities {
+
+
+    public static ColorRGBA convert(Color color){
+        return new ColorRGBA((float)color.getRed(), (float)color.getGreen(),
+                (float)color.getBlue(), (float)color.getOpacity());
+    }
+
+    public static Color convert(ColorRGBA color){
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+    }
 
     /**
      * Gets the triangle vertex data at the given triangle index
