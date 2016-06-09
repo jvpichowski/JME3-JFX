@@ -2,8 +2,6 @@
 !*/
 !*.gitignore
 
-.idea
-
 !*.fxml
 !*.properties
 cache.properties
@@ -87,3 +85,4 @@ data.db.properties
 data.db.script
 networkProfile.xml
 .gwt-log
+/.idea/
