@@ -85,4 +85,5 @@ data.db.properties
 data.db.script
 networkProfile.xml
 .gwt-log
+
 /.idea/
