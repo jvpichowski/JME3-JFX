@@ -7,7 +7,7 @@ import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.Layer;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
-import com.jme3.jfx.base.InputConverters;
+import com.jme3.jfx.base.MouseInputConverters;
 import com.jme3.jfx.base.RenderSystem;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -51,7 +51,7 @@ public class SingleLayerFullscreen {
             app.getInputManager().setCursorVisible(true);
             Configuration config = new Configuration();
             config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
-            config.setInputConverter(InputConverters.FullscreenInput);
+            config.setMouseInputConverter(MouseInputConverters.FullscreenInput);
 
             Layer layer = jFxManager.launch(Context.create(config),
                     primary -> {

@@ -58,9 +58,7 @@ public class StaticLayers {
 //                ((SimpleApplication)app).getGuiNode().attachChild(geom);
 //            }));
 
-            config.setInputConverter(InputConverters.FullscreenInput);
-            config.setSingleLayer(false);
-            config.setStaticLayers(true);
+            config.setMouseInputConverter(MouseInputConverters.FullscreenInput);
             config.setName("static layer fullscreen context");
 
             Context context = Context.create(config);
@@ -84,7 +82,7 @@ public class StaticLayers {
             //Add a scene
             Group root = new Group();
             Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
-            scene.setFill(new Color(0,0,0,0)); //transparent
+            scene.setFill(Color.TRANSPARENT);
             scene.addEventHandler(Event.ANY, event -> {
                 System.out.println("Unhandled event at " +num+": "+event);
             });

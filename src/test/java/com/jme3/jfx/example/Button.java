@@ -6,7 +6,7 @@ import com.jme3.jfx.FxApplication;
 import com.jme3.jfx.JFxManager;
 import com.jme3.jfx.base.Configuration;
 import com.jme3.jfx.base.Context;
-import com.jme3.jfx.base.InputConverters;
+import com.jme3.jfx.base.MouseInputConverters;
 import com.jme3.jfx.base.RenderSystem;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -41,10 +41,7 @@ public class Button {
             Configuration config = new Configuration();
 
             config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
-
-            config.setInputConverter(InputConverters.FullscreenInput);
-            config.setSingleLayer(false);
-            config.setStaticLayers(true);
+            config.setMouseInputConverter(MouseInputConverters.FullscreenInput);
             config.setName("static layer fullscreen context");
 
             Context context = Context.create(config);
