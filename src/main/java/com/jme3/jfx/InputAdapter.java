@@ -228,8 +228,7 @@ public final class InputAdapter {
     }
 
     /**
-     * let layers and contexts listen for input. how to tranlate between pos of geometry?
-     * called on java fx thread
+     * Let Layers and Contexts listen for input.
      */
     public interface InputListener{
 

@@ -8,9 +8,9 @@ import java.util.function.BiFunction;
  * You can configure the Contexts provided by this library through this class.
  * It is not defined what happens when you change a configuration after launching a context.
  * This could happen:
- * - nothing
- * - you need to restart the context to applyMouseInput changes
- * - the changes are instantly applied
+ * nothing,
+ * you need to restart the context to apply these changes,
+ * the changes are instantly applied
  *
  */
 public final class Configuration {
