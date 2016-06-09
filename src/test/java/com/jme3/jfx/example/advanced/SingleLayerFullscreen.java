@@ -1,4 +1,4 @@
-package com.jme3.jfx.example;
+package com.jme3.jfx.example.advanced;
 
 import com.jme3.app.Application;
 import com.jme3.app.FlyCamAppState;
@@ -52,6 +52,9 @@ public class SingleLayerFullscreen {
             Configuration config = new Configuration();
             config.setRenderSystem(RenderSystem.renderToViewPort(app.getGuiViewPort()));
             config.setMouseInputConverter(MouseInputConverters.FullscreenInput);
+
+            //force single layer fullscreen support
+            config.setForceSingleLayer(true);
 
             Layer layer = jFxManager.launch(Context.create(config),
                     primary -> {
