@@ -2,8 +2,7 @@ package com.jme3.jfx.example.inputconverter;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.base.*;
+import com.jme3.jfx.*;
 import com.jme3.jfx.example.ExampleJavaFxApplication;
 import com.jme3.material.Material;
 import com.jme3.math.*;

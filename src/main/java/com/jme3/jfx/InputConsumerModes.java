@@ -1,6 +1,4 @@
-package com.jme3.jfx.base;
-
-import com.jme3.jfx.Layer;
+package com.jme3.jfx;
 
 import java.awt.*;
 import java.nio.ByteBuffer;

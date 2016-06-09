@@ -1,12 +1,9 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
-import com.jme3.post.Filter;
-import com.jme3.post.SceneProcessor;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;

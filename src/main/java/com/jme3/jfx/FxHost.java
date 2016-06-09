@@ -1,4 +1,4 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import com.sun.javafx.cursor.CursorFrame;
 import com.sun.javafx.embed.AbstractEvents;

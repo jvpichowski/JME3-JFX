@@ -1,7 +1,6 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import com.jme3.app.Application;
-import com.jme3.jfx.JFxManager;
 import com.jme3.texture.Image;
 import com.jme3.texture.Texture2D;
 import com.jme3.texture.image.ColorSpace;

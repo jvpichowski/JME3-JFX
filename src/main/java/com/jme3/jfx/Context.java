@@ -1,9 +1,6 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import com.jme3.app.Application;
-import com.jme3.jfx.FxApplication;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.Layer;
 
 import java.util.List;
 

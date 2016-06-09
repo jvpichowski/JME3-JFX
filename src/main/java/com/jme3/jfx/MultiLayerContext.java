@@ -1,9 +1,5 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
-import com.jme3.jfx.FxApplication;
-import com.jme3.jfx.InputAdapter;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.Layer;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.renderer.queue.RenderQueue;

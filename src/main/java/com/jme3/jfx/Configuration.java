@@ -1,4 +1,4 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import java.awt.*;
 import java.util.function.BiFunction;

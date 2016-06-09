@@ -3,11 +3,8 @@ package com.jme3.jfx;
 import com.jme3.app.AppTask;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.jfx.base.Context;
-import com.jme3.jfx.fxcontext.FxContext;
 import com.sun.javafx.application.PlatformImpl;
 import javafx.application.Platform;
-import jdk.nashorn.internal.ir.Block;
 import org.lwjgl.opengl.Display;
 
 import javax.swing.*;
@@ -42,18 +39,18 @@ public final class JFxManager extends BaseAppState {
         return inputAdapter;
     }
 
-    @Deprecated
-    public Stage launch(FxContext context, FxApplication application){
-        context.create(this);
-        Stage stage = context.getStage();
-        try {
-            application.start(new Stage.Layer(stage));
-        }catch (Exception e) {
-            context.destroy();
-            e.printStackTrace();
-            return null;
-        }
-        return stage;
+//    @Deprecated
+//    public Stage launch(FxContext context, FxApplication application){
+//        context.create(this);
+//        Stage stage = context.getStage();
+//        try {
+//            application.start(new Stage.Layer(stage));
+//        }catch (Exception e) {
+//            context.destroy();
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return stage;
 //        return enqueue(new Callable<Stage>() {
 //            @Override
 //            public Stage call() throws Exception {
@@ -69,7 +66,7 @@ public final class JFxManager extends BaseAppState {
 //                return stage;
 //            }
 //        });
-    }
+//    }
 
     //move to stage because of stageposition
     public double getScreenY(double stageY){

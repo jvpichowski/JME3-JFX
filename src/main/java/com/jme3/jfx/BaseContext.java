@@ -1,15 +1,12 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
 import com.jme3.app.Application;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.Layer;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Implementation

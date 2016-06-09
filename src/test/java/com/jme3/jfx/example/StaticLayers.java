@@ -2,10 +2,7 @@ package com.jme3.jfx.example;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.jfx.FxApplication;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.Layer;
-import com.jme3.jfx.base.*;
+import com.jme3.jfx.*;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;

@@ -1,9 +1,5 @@
-package com.jme3.jfx.base;
+package com.jme3.jfx;
 
-import com.jme3.jfx.FxApplication;
-import com.jme3.jfx.InputAdapter;
-import com.jme3.jfx.JFxManager;
-import com.jme3.jfx.Layer;
 import com.sun.javafx.embed.AbstractEvents;
 
 import java.awt.*;
