@@ -3,7 +3,10 @@ package com.jme3.jfx.base;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.post.Filter;
+import com.jme3.post.SceneProcessor;
 import com.jme3.renderer.Camera;
+import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
@@ -32,6 +35,15 @@ public final class RenderSystem {
         this.width = width;
         this.height = height;
     }
+
+    //useful because of reshape
+//    public static RenderSystem renderToProcessor(Consumer<SceneProcessor> processorConsumer){
+//
+//    }
+//
+//    public static RenderSystem renderToFilter(Consumer<Filter> filterConsumer){
+//
+//    }
 
     /**
      * Creates a post ViewPort with the given size to whom the layers are rendered.
@@ -75,6 +87,7 @@ public final class RenderSystem {
     }
 
     /**
+     * There is a transparency bug. TODO fix FrameBuffer usage
      * Creates a texture to whom the layers are rendered. This textur will be applied
      * to the geometry.
      *
@@ -165,6 +178,7 @@ public final class RenderSystem {
                     //setup framebuffer to use texture
                     frameBuffer.setDepthBuffer(Image.Format.Depth);
                     frameBuffer.setColorTexture(texture);
+                    //TODO frameBuffer.setUpdateNeeded(); on transparency rewrite?
 
                     //set viewport to render to offscreen framebuffer
                     viewPort.setOutputFrameBuffer(frameBuffer);
