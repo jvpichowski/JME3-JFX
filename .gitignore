@@ -31,7 +31,7 @@ version.properties
 !build.gradle
 !settings.gradle
 !gradle.properties
-!*.xml
+#!*.xml
 !MANIFEST.MF
 !*.fnt
 !*.png
