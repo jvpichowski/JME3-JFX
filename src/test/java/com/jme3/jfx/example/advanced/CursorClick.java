@@ -1,4 +1,4 @@
-package com.jme3.jfx.example.inputconverter;
+package com.jme3.jfx.example.advanced;
 
 import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
