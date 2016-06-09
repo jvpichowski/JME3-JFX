@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.WeakReference;
-import java.nio.ByteBuffer;
 import java.util.function.BiPredicate;
 
 /**
@@ -19,7 +18,7 @@ abstract class BaseLayer implements Layer{
 
     private final FxContainer fxContainer;
     private final BaseContext context;
-    private BiPredicate<Layer, Point> inputConsumerMode = InputConsumerModes.Discard;
+    private BiPredicate<Layer, Point> inputConsumerMode = InputConsumerModes.AllInArea;
 
     private boolean hasFocus = false;
 
@@ -138,36 +137,6 @@ abstract class BaseLayer implements Layer{
      */
     protected final float contextToLayerY(float context_y){
         return context_y-getY();
-    }
-
-    /**
-     * Default behaviour:
-     * If the alpha value of the scene is not 0 then the scene
-     * is allowed to consume the input.
-     *
-     * @param layer_x
-     * @param layer_y
-     * @return true if this layer is allowed to consume the input
-     */
-    protected boolean consumeInput(int layer_x, int layer_y) {
-        //use injected lambda instead Predicate<Integer, Integer>
-        // InputConsumerModes.AlphaBased with and without threshold
-        // InputConsumerModes.Leak nothing (Discard)
-        // InputConsumerModes.SceneBased
-        // InputConsumerModes.Always
-
-        int alphaLimit = 0;
-
-        if (layer_x < 0 || layer_y >= getWidth()) {
-            return false;
-        }
-        if (layer_y < 0 || layer_y >= getHeight()) {
-            return false;
-        }
-
-        final ByteBuffer data = fxContainer.getImage().getData(0);
-        final int alpha = Byte.toUnsignedInt(data.get(fxContainer.getAlphaByteOffset() + 4 * (layer_y * getWidth() + layer_x)));
-        return alpha > alphaLimit;
     }
 
 
