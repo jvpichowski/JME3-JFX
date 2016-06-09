@@ -8,8 +8,6 @@ import com.jme3.jfx.Layer;
 import java.util.List;
 
 /**
- * Public api
- *
  * The Context defines a frame. This frame could be rendered to
  * geometries or to viewports. The Context holds instances of Java
  * Fx Applications encapsulated into Layers. The Context handles
@@ -26,13 +24,26 @@ public interface Context {
      * @return
      */
     static Context create(Configuration config){
-        if(config.singleLayer){
-            return new SingleLayerContext(config.renderSystem, config.inputConverter);
-        }else{
-            Context result = new MultiLayerContext(config.renderSystem, config.inputConverter, config.staticLayers);
-            result.setName(config.name);
-            return result;
+        if (config == null) {
+            throw new IllegalArgumentException("Config must not be null");
         }
+        if (config.renderSystem == null) {
+            throw new IllegalArgumentException("Config must contain a RenderSystem");
+        }
+        if(config.mouseInputConverter == null){
+            throw new IllegalArgumentException("Config must contain a MouseInputConverter");
+        }
+        if(config.name == null){
+            throw new IllegalArgumentException("Config must contain a Name");
+        }
+        Context result;
+        if(config.forceSingleLayer){
+            result = new SingleLayerContext(config.renderSystem, config.mouseInputConverter);
+        }else{
+            result = new MultiLayerContext(config.renderSystem, config.mouseInputConverter, true);
+        }
+        result.setName(config.name);
+        return result;
     }
 
     Layer createLayer(FxApplication application);
