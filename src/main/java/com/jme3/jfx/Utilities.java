@@ -12,7 +12,8 @@ import javafx.scene.paint.Color;
 import java.nio.FloatBuffer;
 
 /**
- * Created by jan on 14.05.16.
+ * Contains utility methods for converting color
+ * and finding triangle vertex data.
  */
 public class Utilities {
 

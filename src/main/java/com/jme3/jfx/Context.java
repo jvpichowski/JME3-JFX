@@ -10,12 +10,11 @@ import java.util.List;
  * Fx Applications encapsulated into Layers. The Context handles
  * input and the drawing of the Layers.
  *
- * Created by jan on 01.06.16.
  */
 public interface Context {
 
     /**
-     * Default Implementations
+     * Create a default implementation.
      *
      * @param config
      * @return
@@ -43,6 +42,12 @@ public interface Context {
         return result;
     }
 
+    /**
+     * Create a new Layer.
+     *
+     * @param application
+     * @return
+     */
     Layer createLayer(FxApplication application);
 
     /**
@@ -60,10 +65,10 @@ public interface Context {
 
     int getWidth();
 
-    /**
-     *
-     * @return the image object in which the FxApplication is painted
-     */
+//    /**
+//     *
+//     * @return the image object in which the FxApplication is painted
+//     */
 //    Image getImage();
 
     /**
@@ -74,9 +79,8 @@ public interface Context {
     boolean isCreated();
 
     /**
-     * FOR INTERNAL USE ONLY - will throw exception if used twice
+     * Should be called by JFxManager.
      *
-     * is called at jfxManager.createLayer
      * @param jfxManager
      */
     void create(JFxManager jfxManager);

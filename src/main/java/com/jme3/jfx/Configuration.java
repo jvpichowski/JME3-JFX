@@ -12,7 +12,6 @@ import java.util.function.BiFunction;
  * - you need to restart the context to applyMouseInput changes
  * - the changes are instantly applied
  *
- * Created by jan on 01.06.16.
  */
 public final class Configuration {
 
@@ -25,7 +24,7 @@ public final class Configuration {
 
 
     /**
-     *
+     * Set the RenderSystem
      * @param renderSystem
      * @return
      */

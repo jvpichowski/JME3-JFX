@@ -7,8 +7,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /**
- * Created by jan on 26.05.16.
- *
  * A Layer is the frame of every FxApplication.
  * Every Layer belongs to a Context. The Context defines also a frame.
  * A Context could hold multiple Layers. Thus Layers could be ordered
@@ -18,10 +16,6 @@ import java.util.function.Predicate;
  *
  */
 public interface Layer {
-
-    static Layer fromFxml(String path){
-        throw new IllegalStateException("Not implemented yet");
-    }
 
     /**
      * Moves this layer to the front of the context
@@ -88,7 +82,7 @@ public interface Layer {
     float getY();
 
     /**
-     * Sets the title of this layer. YOu can't see this
+     * Sets the title of this layer. You can't see this
      * title. It is only useful for debugging.
      * @param title
      */

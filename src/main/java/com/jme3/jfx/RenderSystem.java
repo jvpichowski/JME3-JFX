@@ -17,10 +17,11 @@ import com.jme3.texture.Texture2D;
 import java.util.function.Consumer;
 
 /**
- * Handles ho the layers are rendered. They could be rendered to
- * the Fullscreen, a ViewPort, a Texture2D or a Geometry.
+ * Handles how the layers are rendered. They could be rendered to
+ * a ViewPort, to a Texture2D, to the Fullscreen in front of the
+ * gui viewport, or to a Geometry. To implement special behavior
+ * use the first two. The latter ones are also based on them.
  *
- * Created by jan on 06.06.16.
  */
 public final class RenderSystem {
 
@@ -43,7 +44,7 @@ public final class RenderSystem {
 //    }
 
     /**
-     * Creates a post ViewPort with the given size to whom the layers are rendered.
+     * Creates a post ViewPort with the given size to which the layers are rendered.
      *
      * @param screenWidth
      * @param screenHeight
@@ -56,7 +57,7 @@ public final class RenderSystem {
     }
 
     /**
-     * Attaches a new scene to this viewPort, which contains the layers.
+     * Attaches a new scene which contains the layers to this viewPort.
      *
      * @param viewPort
      * @return
@@ -67,8 +68,8 @@ public final class RenderSystem {
     }
 
     /**
-     * Creates a pre ViewPort with the given size to whom the layers are rendered.
-     * The ViewPort is rendered to a texture, which can be accessed after creation
+     * Creates a pre ViewPort with the given size to which the layers are rendered.
+     * The ViewPort is rendered to a texture that can be accessed after creation
      * with the accessor.
      *
      * @param width
@@ -83,9 +84,9 @@ public final class RenderSystem {
         return rs;
     }
 
+    //TODO fix FrameBuffer usage, There is a transparency bug.
     /**
-     * There is a transparency bug. TODO fix FrameBuffer usage
-     * Creates a texture to whom the layers are rendered. This textur will be applied
+     * Creates a texture to which the layers are rendered. This texture will be applied
      * to the geometry.
      *
      * @param width

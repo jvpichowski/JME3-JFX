@@ -16,7 +16,7 @@ import java.awt.*;
 import java.util.function.BiFunction;
 
 /**
- * Created by jan on 07.06.16.
+ * Contains some default MouseInputConverters.
  */
 public final class MouseInputConverters {
 
@@ -26,11 +26,22 @@ public final class MouseInputConverters {
     public static final BiFunction<Context, Point, Point> Discard = (c,p) -> null;
 
     /**
-     *
+     * Converts the cursor position to the click point of a fullscreen FxApplication.
      */
     public static final BiFunction<Context, Point, Point> FullscreenInput = (c,p) -> new Point(p.x, c.getHeight()-p.y);
 
 
+    /**
+     * Converts the crosshairs position which should be centered on the screen
+     * to the click point at the geometry.
+     *
+     * @param camera
+     * @param geometry
+     * @param width
+     * @param height
+     * @param collisionTree
+     * @return
+     */
     public static final BiFunction<Context, Point, Point> FullscreenCrosshairsToGeometry(
             Camera camera, Geometry geometry, int width, int height, Node collisionTree){
         return (c,p) -> {
@@ -41,6 +52,7 @@ public final class MouseInputConverters {
     }
 
     /**
+     * Converts the cursor position to the click point at the geometry.
      *
      * @param camera to which scene the geometry is added
      * @param geometry

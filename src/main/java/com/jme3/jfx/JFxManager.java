@@ -17,7 +17,6 @@ import java.util.function.Consumer;
  * by this AppState. It is recommend to launch FxApplication through
  * the methods provided by this AppState.
  *
- * Created by jan on 11.05.16.
  */
 public final class JFxManager extends BaseAppState {
 
@@ -30,11 +29,22 @@ public final class JFxManager extends BaseAppState {
     private BlockingQueue<Runnable> cleanTasks = new LinkedBlockingQueue<>();
     private CopyOnWriteArrayList<Consumer<Float>> updateTasks = new CopyOnWriteArrayList<>();
 
+    /**
+     * Launch a FxApplication to create a context.
+     *
+     * @param context the Context which should be created
+     * @param application the FxApplication which should be drawn to the first Layer of this Context
+     * @return
+     */
     public Layer launch(Context context, FxApplication application){
         context.create(this);
         return context.createLayer(application);
     }
 
+    /**
+     *
+     * @return
+     */
     public InputAdapter getInputAdapter(){
         return inputAdapter;
     }
@@ -69,13 +79,13 @@ public final class JFxManager extends BaseAppState {
 //    }
 
     //move to stage because of stageposition
-    public double getScreenY(double stageY){
-        try {
-            return Display.getX() /*+ insetsTop*/ + stageY;
-        }catch (Exception ex){
-            throw new IllegalStateException("This jME3 Context doesn't support this operation! You have to use lgjwl");
-        }
-    }
+//    public double getScreenY(double stageY){
+//        try {
+//            return Display.getX() /*+ insetsTop*/ + stageY;
+//        }catch (Exception ex){
+//            throw new IllegalStateException("This jME3 Context doesn't support this operation! You have to use lgjwl");
+//        }
+//    }
 
     /**
      * On calling this the RawInputListener is added to the InputManager
@@ -91,6 +101,10 @@ public final class JFxManager extends BaseAppState {
         inputAdapter.destroy();
     }
 
+    /**
+     * Hook in the update cycle of jME3
+     * @param onUpdate
+     */
     public void addOnUpdate(Consumer<Float> onUpdate){
         updateTasks.add(onUpdate);
     }
@@ -99,10 +113,19 @@ public final class JFxManager extends BaseAppState {
         updateTasks.remove(onUpdate);
     }
 
+    /**
+     * This Runnable will be called in the jME3 Thread after this JFxManager is initialized.
+     * @param r
+     */
     public void onInit(Runnable r){
         enqueue(() -> getApplication().enqueue(r));
     }
 
+    /**
+     * This Runnable will be called in the jME3 Thread just before this
+     * JFxManager will be destroyed.
+     * @param r
+     */
     public void onClean(Runnable r) {
         cleanTasks.add(r);
     }
@@ -190,6 +213,10 @@ public final class JFxManager extends BaseAppState {
 
     }
 
+    /**
+     * Enqueue a task to the JavaFx Thread.
+     * @param task
+     */
     public void enqueue(Runnable task) {
         if(!isInitialized()){
             System.out.println("JFxManger is not initialized yet!");
@@ -203,6 +230,12 @@ public final class JFxManager extends BaseAppState {
         }
     }
 
+    /**
+     * Enqueue a task to the JavaFx Thread.
+     * @param callable
+     * @param <V>
+     * @return
+     */
     public <V> Future<V> enqueue(Callable<V> callable){
         AppTask<V> task = new AppTask<>(callable);
         if(!isInitialized()){

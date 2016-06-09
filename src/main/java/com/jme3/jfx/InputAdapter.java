@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * Created by jan on 05.06.16.
+ * This class forwards raw input events to the Contexts.
  */
 public final class InputAdapter {
 
@@ -88,6 +88,12 @@ public final class InputAdapter {
         return mouseButtonState[button];
     }
 
+    /**
+     * Register an listener to get notified of input events.
+     * Usually only used by Contexts.
+     *
+     * @param listener
+     */
     public void register(InputListener listener) {
         listeners.add(listener);
     }
