@@ -5,7 +5,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: "sonar-runner"
+apply plugin: 'org.sonarqube'
 
 
 /////////////////git version logic///////////////
@@ -43,7 +43,7 @@ group = "com.jme3x"
 
 repositories {
 	//mavenCentral()
-	jcenter()
+	jcenter();
 	//maven { url "http://updates.jmonkeyengine.org/maven/"}
 }
 
@@ -64,6 +64,8 @@ dependencies {
     compile group: 'org.jmonkeyengine', name: 'jme3-desktop', version: '3.1.0-beta1'
     compile group: 'org.jmonkeyengine', name: 'jme3-lwjgl', version: '3.1.0-beta1'
 	testRuntime "org.slf4j:slf4j-jdk14:${v_slf4j}"
+
+
 }
 
 task packageSources(type: Jar) {
@@ -75,12 +77,19 @@ artifacts {
 	archives(packageSources) { type = 'jar' }
 }
 
+
 eclipse {
 	classpath {
 		plusConfigurations += [configurations.provided]
-		noExportConfigurations += [configurations.provided]
+
+// * What went wrong:
+// A problem occurred evaluating root project 'jfx'.
+// > Could not get unknown property 'noExportConfigurations' for object of type org.gradle.plugins.ide.eclipse.model.EclipseClasspath.
+//		noExportConfigurations += [configurations.provided]
+
 	}
 }
+
 idea {
 	module {
 		scopes.PROVIDED.plus += [configurations.provided]
@@ -88,26 +97,33 @@ idea {
 }
 
 buildscript {
-	repositories { jcenter() }
-	dependencies { classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5' }
+	repositories {
+		jcenter()
+		maven { url "https://plugins.gradle.org/m2/" }
+	 }
+	dependencies { 
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'	
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1"
+	 }
 }
 
 jar {
 	manifest { attributes("Implementation-Version": buildVersion) }
 }
 
-sonarRunner {
-	sonarProperties {
-		property "sonar.host.url", sonarUrl
-		property "sonar.jdbc.url", sonarDBUrl
-		property "sonar.jdbc.driverClassName", sonarDBDriver
-		property "sonar.jdbc.username", sonarDBUser
-		property "sonar.jdbc.password", sonarDBPw
-		property "sonar.login",sonarUser
-		property "sonar.password",sonarPw
-		property "sonar.sourceEncoding", "UTF-8"
-		property "sonar.projectName", "JME-JFX"
-	}
+sonarqube {
+  properties {
+                property "sonar.host.url", sonarUrl
+                property "sonar.jdbc.url", sonarDBUrl
+                property "sonar.jdbc.driverClassName", sonarDBDriver
+                property "sonar.jdbc.username", sonarDBUser
+                property "sonar.jdbc.password", sonarDBPw
+                property "sonar.login",sonarUser
+                property "sonar.password",sonarPw
+                property "sonar.sourceEncoding", "UTF-8"
+                property "sonar.projectName", "JME-JFX"
+
+  }
 }
 
 uploadArchives {
